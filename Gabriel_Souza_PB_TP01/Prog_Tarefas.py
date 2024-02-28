@@ -1,8 +1,5 @@
 # As tarefas a serem utilizadas poderão ter diferentes metadados: ID da tarefa, descrição, data de criação, status, prazo final, urgência, entre outros atributos... (O seu professor irá disponibilizar uma listagem de tarefas, bem como, as informações que serão manipuladas para cada uma das tarefas.)
 
-# Detalhes da Implementação:
-
-# B - Manipule uma lista para armazenar e gerenciar as tarefas, incluindo adicionar, listar, marcar como concluída e remover tarefas.
 # C - Crie funções para cada funcionalidade do sistema (adicionar, listar, marcar como concluída, remover), utilizando argumentos, parâmetros por palavra-chave, parâmetros padrão e retorno de valores.
 # D - Documente cada função utilizando DocStrings para descrever seu propósito, uso e parâmetros.
 
