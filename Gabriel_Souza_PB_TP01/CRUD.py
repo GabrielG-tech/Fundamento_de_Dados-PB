@@ -26,10 +26,9 @@ def exibir_tarefas(tarefas):
     Retorno:
     Nenhum.
     """
-    for i in range(len(tarefas)):
-        for j in range(len(tarefas[i])):
-            print(tarefas[i][j], end=" ")
-        print()
+    for tarefa in tarefas:
+        print(f"{tarefa[0]} -\t{tarefa[1]}")
+
 
 def pesquisar_tarefa(tarefas, num):
     """
@@ -59,7 +58,13 @@ def incluir_tarefa(tarefas):
     Retorno:
     Nenhum.
     """
-    num = int(input("Entre com número da tarefa: "))
+    while True:
+        try:
+            num = int(input("Entre com número da tarefa: "))
+            break
+        except ValueError:
+            print("Erro: Por favor, insira um número inteiro para o número da tarefa.")
+
     tarefa = pesquisar_tarefa(tarefas, num)
     if tarefa:
         print("Erro: tarefa já existe")
@@ -68,23 +73,23 @@ def incluir_tarefa(tarefas):
     status = input("Entre com o status: ")
     tarefas.append([num, descricao, status])
 
-def concluir_tarefa(tarefas, indice):
+
+def concluir_tarefa(tarefas):
     """
     Marca uma tarefa como concluída.
 
     Parâmetros:
     - tarefas (list): Lista de tarefas onde a tarefa será marcada como concluída.
-    - indice (int): Índice da tarefa na lista a ser marcada como concluída.
 
     Retorno:
     Nenhum.
     """
+    indice = int(input("Escolha o índice da tarefa concluída: ")) - 1
     if indice >= 0 and indice < len(tarefas):
         tarefas[indice][1] = "Concluída"
         print("Tarefa marcada como concluída com sucesso.")
     else:
         print("Erro: Índice da tarefa inválido.")
-
 
 def excluir_tarefa(tarefas):
     """

@@ -23,17 +23,14 @@ while continuar:
     escolha = input("Escolha uma das opções: ")
 
     match escolha:
-        case "1": 
-            nova_tarefa = input("Digite o nome da tarefa: ")
-            incluir_tarefa(listaTarefas, nova_tarefa)
+        case "1":
+            incluir_tarefa(listaTarefas)
         case "2":
             exibir_tarefas(listaTarefas)
         case "3":
-            indice_concluir = int(input("Escolha o índice da tarefa concluída: ")) - 1
-            concluir_tarefa(listaTarefas, indice_concluir)
+            concluir_tarefa(listaTarefas)
         case "4":
-            indice_remover = int(input("Digite o índice da tarefa: ")) - 1
-            excluir_tarefa(listaTarefas, indice_remover)
+            excluir_tarefa(listaTarefas)
         case "5":
             continuar = False
         case _:
