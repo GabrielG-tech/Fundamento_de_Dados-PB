@@ -8,7 +8,7 @@ def mostrar_menu():
     Retorno:
     Nenhum.
     """
-    print("\n" + "="*8 + " Lista de Tarefas " + "="*8)
+    print("\n" + "="*9 + " Lista de Tarefas " + "="*9)
     print("[1] - Adicionar Tarefa")
     print("[2] - Listar Tarefas")
     print("[3] - Marcar Tarefa como Concluída")
@@ -68,6 +68,24 @@ def incluir_tarefa(tarefas):
     status = input("Entre com o status: ")
     tarefas.append([num, descricao, status])
 
+def concluir_tarefa(tarefas, indice):
+    """
+    Marca uma tarefa como concluída.
+
+    Parâmetros:
+    - tarefas (list): Lista de tarefas onde a tarefa será marcada como concluída.
+    - indice (int): Índice da tarefa na lista a ser marcada como concluída.
+
+    Retorno:
+    Nenhum.
+    """
+    if indice >= 0 and indice < len(tarefas):
+        tarefas[indice][1] = "Concluída"
+        print("Tarefa marcada como concluída com sucesso.")
+    else:
+        print("Erro: Índice da tarefa inválido.")
+
+
 def excluir_tarefa(tarefas):
     """
     Exclui uma tarefa da lista de tarefas.
@@ -78,7 +96,11 @@ def excluir_tarefa(tarefas):
     Retorno:
     Nenhum.
     """
-    num = int(input("Entre com o número da tarefa: "))
+    try:
+        num = int(input("Entre com o número da tarefa: "))
+    except ValueError:
+        print("Erro: Por favor, insira um número inteiro para o número da tarefa.")
+        return
     tarefa = pesquisar_tarefa(tarefas, num)
     if not tarefa:
         print("Erro: tarefa não existe")
