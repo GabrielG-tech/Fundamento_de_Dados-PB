@@ -1,17 +1,21 @@
 # As tarefas a serem utilizadas poderão ter diferentes metadados: ID da tarefa, descrição, data de criação, status, prazo final, urgência, entre outros atributos... (O seu professor irá disponibilizar uma listagem de tarefas, bem como, as informações que serão manipuladas para cada uma das tarefas.)
 
-# C - Crie funções para cada funcionalidade do sistema (adicionar, listar, marcar como concluída, remover), utilizando argumentos, parâmetros por palavra-chave, parâmetros padrão e retorno de valores.
-# D - Documente cada função utilizando DocStrings para descrever seu propósito, uso e parâmetros.
-
 """
 Este script implementa um sistema simples de lista de tarefas, permitindo adicionar, listar, marcar como concluída e remover tarefas.
 """
+from CRUD import *
 
-# Lista de tarefas inicial
-listaTarefas = [["Fazer Pizza", "Pendente"],
-                ["Estudar italiano", "Concluída"],
-                ["Jogar Uno", "Pendente"], 
-                ["TP01 - Projeto", "Pendente"]]
+def criar_lista_padrao(listaTarefas):
+    # Lista de tarefas inicial
+    listaTarefas = [["Fazer Pizza", "Pendente"],
+                    ["Estudar italiano", "Concluída"],
+                    ["Jogar Uno", "Pendente"], 
+                    ["TP01 - Projeto", "Pendente"]]
+    return listaTarefas
+
+listaTarefas = []
+listaTarefas = criar_lista_padrao(listaTarefas)
+
 
 def adicionar(tarefa: str):
     """
@@ -67,10 +71,8 @@ def remover(indice: int):
 # Loop principal para interação com o usuário
 continuar = True
 while continuar:
-    print("\n" + "="*8 + " Lista de Tarefas " + "="*8)
-    print("[1] - Adicionar Tarefa\n[2] - Listar Tarefas\n[3] - Marcar Tarefa como Concluída\n[4] - Remover Tarefa")
-    print("="*36 + "\n")
-    escolha = input("\nEscolha uma das opções: ")
+    mostrar_menu()
+    escolha = input("Escolha uma das opções: ")
 
     if escolha == "1": 
         nova_tarefa = input("Digite o nome da tarefa: ")
@@ -83,7 +85,7 @@ while continuar:
     elif escolha == "4":
         indice_remover = int(input("Digite o índice da tarefa: ")) - 1
         remover(indice_remover)
-    elif escolha.lower() == "sair":
+    elif escolha.lower() == "5":
         continuar = False
     else:
         print("Entrada inválida, tente novamente.\n")
