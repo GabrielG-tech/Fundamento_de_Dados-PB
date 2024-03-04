@@ -22,18 +22,19 @@ while continuar:
     mostrar_menu()
     escolha = input("Escolha uma das opções: ")
 
-    if escolha == "1": 
-        nova_tarefa = input("Digite o nome da tarefa: ")
-        incluir_tarefa(listaTarefas, nova_tarefa)
-    elif escolha == "2":
-        exibir_tarefas(listaTarefas)
-    elif escolha == "3":
-        indice_concluir = int(input("Escolha o índice da tarefa concluída: ")) - 1
-        concluir_tarefa(listaTarefas, indice_concluir)
-    elif escolha == "4":
-        indice_remover = int(input("Digite o índice da tarefa: ")) - 1
-        excluir_tarefa(listaTarefas, indice_remover)
-    elif escolha.lower() == "5":
-        continuar = False
-    else:
-        print("Entrada inválida, tente novamente.\n")
+    match escolha:
+        case "1": 
+            nova_tarefa = input("Digite o nome da tarefa: ")
+            incluir_tarefa(listaTarefas, nova_tarefa)
+        case "2":
+            exibir_tarefas(listaTarefas)
+        case "3":
+            indice_concluir = int(input("Escolha o índice da tarefa concluída: ")) - 1
+            concluir_tarefa(listaTarefas, indice_concluir)
+        case "4":
+            indice_remover = int(input("Digite o índice da tarefa: ")) - 1
+            excluir_tarefa(listaTarefas, indice_remover)
+        case "5":
+            continuar = False
+        case _:
+            print("Entrada inválida, tente novamente.\n")
