@@ -26,9 +26,14 @@ def exibir_tarefas(tarefas):
     Retorno:
     Nenhum.
     """
-    for tarefa in tarefas:
-        print(f"{tarefa[0]} -\t{tarefa[1]}")
-
+    print("="*21 + " Tarefas " + "="*21)
+    for index, tarefa in enumerate(tarefas):
+        num, descricao, status, data_criacao, prazo_final, urgencia = tarefa
+        if index < len(tarefas) - 1:  # Verifica se não é o último item
+            print(f"{num} - {descricao} - {status} - Urgência: {urgencia}\nCriada em: {data_criacao} - Prazo Final: {prazo_final}\n")
+        else:
+            print(f"{num} - {descricao} - {status} - Urgência: {urgencia}\nCriada em: {data_criacao} - Prazo Final: {prazo_final}")
+    print("="*51)
 
 def pesquisar_tarefa(tarefas, num):
     """
@@ -41,12 +46,10 @@ def pesquisar_tarefa(tarefas, num):
     Retorno:
     - tarefa_pesquisada (list): Lista contendo os dados da tarefa encontrada.
     """
-    tarefa_pesquisada = []
     for tarefa in tarefas:
         if tarefa[0] == num:
-            tarefa_pesquisada = tarefa
-            break
-    return tarefa_pesquisada
+            return tarefa
+    return None
 
 def incluir_tarefa(tarefas):
     """
@@ -58,20 +61,34 @@ def incluir_tarefa(tarefas):
     Retorno:
     Nenhum.
     """
+    # Calcula o próximo ID disponível
+    if tarefas:
+        proximo_id = max(tarefa[0] for tarefa in tarefas) + 1
+    else:
+        proximo_id = 1
+
+    descricao = input("Entre com a descrição: ")
+    status = "Pendente"
+    
     while True:
         try:
-            num = int(input("Entre com número da tarefa: "))
+            data_criacao = input("Entre com a data de criação (formato: DD-MM-AAAA): ")
             break
         except ValueError:
-            print("Erro: Por favor, insira um número inteiro para o número da tarefa.")
+            print("Erro: Por favor, insira uma data no formato DD-MM-AAAA de criação da tarefa.")
+    while True:
+        try:
+            prazo_final = input("Entre com o prazo final (formato: DD-MM-AAAA): ")
+            break
+        except ValueError:
+            print("Erro: Por favor, insira uma data no formato DD-MM-AAAA de prazo final da tarefa.")
 
-    tarefa = pesquisar_tarefa(tarefas, num)
-    if tarefa:
-        print("Erro: tarefa já existe")
-        return
-    descricao = input("Entre com a descrição: ")
-    status = input("Entre com o status: ")
-    tarefas.append([num, descricao, status])
+    urgencia = input("Informe a urgência da tarefa ([1] alta, [2] média, [3] baixa): ")
+    if urgencia == "1": urgencia = "alta"
+    elif urgencia == "2": urgencia = "média"
+    elif urgencia == "3": urgencia = "baixa"
+
+    tarefas.append([proximo_id, descricao, status, data_criacao, prazo_final, urgencia])
 
 def concluir_tarefa(tarefas):
     """
@@ -83,12 +100,14 @@ def concluir_tarefa(tarefas):
     Retorno:
     Nenhum.
     """
-    indice = int(input("Escolha o índice da tarefa concluída: ")) - 1
-    if indice >= 0 and indice < len(tarefas):
-        tarefas[indice][1] = "Concluída"
-        print("Tarefa marcada como concluída com sucesso.")
-    else:
-        print("Erro: Índice da tarefa inválido.")
+    num = int(input("Entre com o número da tarefa concluída: "))
+    tarefa = pesquisar_tarefa(tarefas, num)
+    if not tarefa:
+        print("Erro: Tarefa não encontrada.")
+        return
+
+    tarefa[2] = "Concluída"
+    print("Tarefa marcada como concluída com sucesso.")
 
 def excluir_tarefa(tarefas):
     """
@@ -100,66 +119,15 @@ def excluir_tarefa(tarefas):
     Retorno:
     Nenhum.
     """
-    try:
-        num = int(input("Entre com o número da tarefa: "))
-    except ValueError:
-        print("Erro: Por favor, insira um número inteiro para o número da tarefa.")
-        return
+    num = int(input("Entre com o número da tarefa: "))
     tarefa = pesquisar_tarefa(tarefas, num)
     if not tarefa:
-        print("Erro: tarefa não existe")
+        print("Erro: Tarefa não encontrada.")
         return
+
     tarefas.remove(tarefa)
 
-# ============================================================
-
-# def exibir_tarefas(tarefas):
-#     """
-#     Exibe as informações de todas as tarefas.
-
-#     Parâmetros:
-#     - tarefas (list): Uma lista contendo as tarefas, cada tarefa é uma lista com os seguintes elementos:
-#         - ID (int): O identificador único da tarefa.
-#         - Descrição (str): A descrição da tarefa.
-#         - Status (str): O status atual da tarefa.
-#         - Data de Criação (str): A data em que a tarefa foi criada.
-#         - Prazo Final (str): A data de prazo final para a conclusão da tarefa.
-#         - Urgência (str): O nível de urgência da tarefa.
-
-#     Retorno:
-#     Nenhum.
-#     """
-
-# def pesquisar_tarefa(tarefas, num):
-#     """
-#     Pesquisa uma tarefa pelo seu ID na lista de tarefas.
-
-#     Parâmetros:
-#     - tarefas (list): Uma lista contendo as tarefas.
-#     - num (int): O ID da tarefa a ser pesquisada.
-
-#     Retorno:
-#     - tarefa_pesquisada (list): A tarefa encontrada, ou uma lista vazia se a tarefa não for encontrada.
-#     """
-
-# def incluir_tarefa(tarefas):
-#     """
-#     Inclui uma nova tarefa na lista de tarefas.
-
-#     Parâmetros:
-#     - tarefas (list): Uma lista contendo as tarefas.
-
-#     Retorno:
-#     Nenhum.
-#     """
-
-# def excluir_tarefa(tarefas):
-#     """
-#     Exclui uma tarefa da lista de tarefas.
-
-#     Parâmetros:
-#     - tarefas (list): Uma lista contendo as tarefas.
-
-#     Retorno:
-#     Nenhum.
-#     """
+    # Se houver tarefas restantes, atualize os IDs para preencher lacunas
+    if tarefas:
+        for i, tarefa in enumerate(tarefas):
+            tarefa[0] = i + 1
