@@ -73,7 +73,6 @@ def incluir_tarefa(tarefas):
     status = input("Entre com o status: ")
     tarefas.append([num, descricao, status])
 
-
 def concluir_tarefa(tarefas):
     """
     Marca uma tarefa como concluída.
