@@ -44,7 +44,7 @@ def pesquisar_tarefa(tarefas, num):
     - num (int): Número da tarefa a ser pesquisada.
 
     Retorno:
-    - tarefa_pesquisada (list): Lista contendo os dados da tarefa encontrada.
+    - tarefa (list): Lista contendo os dados da tarefa encontrada.
     """
     for tarefa in tarefas:
         if tarefa[0] == num:
