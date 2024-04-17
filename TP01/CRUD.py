@@ -26,14 +26,13 @@ def exibir_tarefas(tarefas):
     Retorno:
     Nenhum.
     """
-    print("="*21 + " Tarefas " + "="*21)
+    print("="*91)
+    print("| Id | Descrição                  | Status    | Data de Criação | Prazo        | Urgência |")
+    print("|----+----------------------------+-----------+-----------------+--------------+----------|")
     for index, tarefa in enumerate(tarefas):
         num, descricao, status, data_criacao, prazo_final, urgencia = tarefa
-        if index < len(tarefas) - 1:  # Verifica se não é o último item
-            print(f"{num} - {descricao} - {status} - Urgência: {urgencia}\nCriada em: {data_criacao} - Prazo Final: {prazo_final}\n")
-        else:
-            print(f"{num} - {descricao} - {status} - Urgência: {urgencia}\nCriada em: {data_criacao} - Prazo Final: {prazo_final}")
-    print("="*51)
+        print(f"| {str(num).ljust(2)} | {descricao.ljust(26)} | {status.ljust(9)} | {data_criacao.ljust(15)} | {prazo_final.ljust(12)} | {urgencia.ljust(8)} |")
+    print("="*91)
 
 def pesquisar_tarefa(tarefas, num):
     """
@@ -67,7 +66,7 @@ def incluir_tarefa(tarefas):
     else:
         proximo_id = 1
 
-    descricao = input("Entre com a descrição: ")
+    descricao = input("Entre com a descrição: ").capitalize() 
     status = "Pendente"
     
     while True:
@@ -83,10 +82,10 @@ def incluir_tarefa(tarefas):
         except ValueError:
             print("Erro: Por favor, insira uma data no formato DD-MM-AAAA de prazo final da tarefa.")
 
-    urgencia = input("Informe a urgência da tarefa ([1] alta, [2] média, [3] baixa): ")
-    if urgencia == "1": urgencia = "alta"
-    elif urgencia == "2": urgencia = "média"
-    elif urgencia == "3": urgencia = "baixa"
+    urgencia = input("Informe a urgência da tarefa ([1] Alta, [2] Média, [3] Baixa): ")
+    if urgencia == "1": urgencia = "Alta"
+    elif urgencia == "2": urgencia = "Média"
+    elif urgencia == "3": urgencia = "Baixa"
 
     tarefas.append([proximo_id, descricao, status, data_criacao, prazo_final, urgencia])
 

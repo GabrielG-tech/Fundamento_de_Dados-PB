@@ -6,8 +6,8 @@ listaTarefas = []
 # Função para criar uma lista padrão de tarefas (se necessário)
 def criar_lista_padrao(listaTarefas):
     listaTarefas = [
-        [1, "Fazer Pizza", "Pendente", "20-03-2024", "2024-03-25", "alta"],
-        [2, "Estudar italiano", "Concluída", "18-03-2024", "2024-03-22", "média"]
+        [1, "Fazer Pizza", "Pendente", "20-03-2024", "2024-03-25", "Alta"],
+        [2, "Estudar italiano", "Concluída", "18-03-2024", "2024-03-22", "Média"]
     ]
     return listaTarefas
 
