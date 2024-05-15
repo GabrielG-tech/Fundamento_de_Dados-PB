@@ -92,7 +92,7 @@ while True:
         nome = input("Digite o nome do contato que deseja excluir: ")
         excluir_contato(nome)
     elif opcao == '6':
-        print("Saindo...")
+        print("Fim do programa")
         break
     else:
         print("Opção inválida.")
