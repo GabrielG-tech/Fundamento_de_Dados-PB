@@ -43,34 +43,34 @@ INSERT INTO funcionarios (nome, cargo, departamento, salario, data_contratacao) 
     ("Diego Pereira", "Gerente de Operações", "Produção", 8500, "2022-12-20"),
     ("Renato Costa", "Analista de Logística", "Produção", 6000, "2023-03-20");
 
-# 1. Consultar todos os funcionários da empresa
+-- 1. Consultar todos os funcionários da empresa
 
-# 2. Consultar os funcionários ordenados por nome
+-- 2. Consultar os funcionários ordenados por nome
 
-# 3. Consultar o nome e o salário dos funcionários ordenados por salário em ordem decrescente
+-- 3. Consultar o nome e o salário dos funcionários ordenados por salário em ordem decrescente
 
-# 4. Consultar o nome e o departamento dos funcionários do departamento de TI
+-- 4. Consultar o nome e o departamento dos funcionários do departamento de TI
 
-# 5. Consultar o nome, o salário e o departamento dos funcionários com salário maior ou igual a 6000 e que sejam do departamento de TI
+-- 5. Consultar o nome, o salário e o departamento dos funcionários com salário maior ou igual a 6000 e que sejam do departamento de TI
 
-# 6. Consultar os funcionários com o sobrenome "Souza"
+-- 6. Consultar os funcionários com o sobrenome "Souza"
 
-# 7. Consultar o número de funcionários por departamento ordenado por número de funcionários em ordem decrescente
+-- 7. Consultar o número de funcionários por departamento ordenado por número de funcionários em ordem decrescente
 
-# 8. Consultar os departamentos com mais de cinco funcionários
+-- 8. Consultar os departamentos com mais de cinco funcionários
 
-# 9. Consultar o(s) funcionário(s) com o maior salário, utilizando subquery
+-- 9. Consultar o(s) funcionário(s) com o maior salário, utilizando subquery
 
-# 10. Consultar o nome e a data de contratação dos funcionários contratados no ano de 2022
+-- 10. Consultar o nome e a data de contratação dos funcionários contratados no ano de 2022
 
-# 11. Consultar o número de cargos por departamento exibindo apenas os departamentos com mais de quatro cargos e ordenado por cargos em ordem decrescente
+-- 11. Consultar o número de cargos por departamento exibindo apenas os departamentos com mais de quatro cargos e ordenado por cargos em ordem decrescente
 
-# 12. Consultar os funcionários que foram contratados entre janeiro e junho de 2023, utilizando BETWEEN
+-- 12. Consultar os funcionários que foram contratados entre janeiro e junho de 2023, utilizando BETWEEN
 
-# 13. Consultar o(s) funcionário(s) com data de contratação mais antiga, utilizando subquery
+-- 13. Consultar o(s) funcionário(s) com data de contratação mais antiga, utilizando subquery
 
-# 14. Calcular a média salarial por departamento e exibir os departamentos que tenham média maiores ou iguais a 6000
+-- 14. Calcular a média salarial por departamento e exibir os departamentos que tenham média maiores ou iguais a 6000
 
-# 15. Calcular a diferença salarial entre o funcionário com o maior salário e o com o menor salário
+-- 15. Calcular a diferença salarial entre o funcionário com o maior salário e o com o menor salário
 
-# SELECT nome, quantidade from produtos where quantidade = (select min(quantidade) from produtos);
+-- SELECT nome, quantidade from produtos where quantidade = (select min(quantidade) from produtos);
