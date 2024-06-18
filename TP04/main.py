@@ -8,7 +8,7 @@ db_exists = exists('biblioteca.db')
 # Conectar ao banco de dados
 session = conectar_bd()
 
-if not db_exists:
+if db_exists:
     # Leitura dos arquivos CSV
     autores_df = pd.read_csv('TP04/Dados_CSV/autores.csv', delimiter=';', header=None, names=['id', 'nome', 'sobrenome'])
     livros_df = pd.read_csv('TP04/Dados_CSV/livros.csv', delimiter=';', header=None, names=['id', 'titulo', 'data_lancamento', 'preco'])
@@ -39,8 +39,16 @@ if not db_exists:
     # Commit para salvar os relacionamentos
     session.commit()
 
-# Consultas
 def consultar_autores_por_livro(titulo_livro):
+    """
+    Consulta os autores de um livro específico.
+
+    Args:
+        titulo_livro (str): O título do livro a ser consultado.
+
+    Returns:
+        pandas.DataFrame: DataFrame contendo os nomes e sobrenomes dos autores do livro.
+    """
     query = session.query(Livro).filter(Livro.titulo == titulo_livro).first()
     if query:
         return pd.DataFrame([{'nome': autor.nome, 'sobrenome': autor.sobrenome} for autor in query.autores])
@@ -48,6 +56,16 @@ def consultar_autores_por_livro(titulo_livro):
         return pd.DataFrame()
 
 def consultar_livros_por_autor(nome_autor, sobrenome_autor):
+    """
+    Consulta os livros de um autor específico.
+
+    Args:
+        nome_autor (str): O nome do autor a ser consultado.
+        sobrenome_autor (str): O sobrenome do autor a ser consultado.
+
+    Returns:
+        pandas.DataFrame: DataFrame contendo os títulos, datas de lançamento e preços dos livros do autor.
+    """
     query = session.query(Autor).filter(Autor.nome == nome_autor, Autor.sobrenome == sobrenome_autor).first()
     if query:
         return pd.DataFrame([{'titulo': livro.titulo, 'data_lancamento': livro.data_lancamento, 'preco': livro.preco} for livro in query.livros])

@@ -2,8 +2,13 @@ import requests
 from bs4 import BeautifulSoup
 import pandas as pd
 
-# Função para extrair e processar os dados da página
 def web_scrape_pokemon_data():
+    """
+    Extrai e processa dados de estatísticas de pokémons da geração 1 de um site da web.
+    
+    Returns:
+        pandas.DataFrame: Um DataFrame contendo as estatísticas dos pokémons da geração 1.
+    """
     url = "https://pokemondb.net/pokedex/stats/gen1"
     response = requests.get(url)
     soup = BeautifulSoup(response.text, 'html.parser')
@@ -16,8 +21,17 @@ def web_scrape_pokemon_data():
     
     return df
 
-# Função para responder todas as perguntas
 def info_data(df):
+    """
+    Processa o DataFrame de estatísticas dos pokémons e imprime várias informações.
+
+    Args:
+        df (pandas.DataFrame): O DataFrame contendo as estatísticas dos pokémons.
+
+    Prints:
+        Número de pokémons apresentados, tipo de pokémon mais comum, 
+        pokémons com maior HP, maior Attack, maior Defence e maior Speed.
+    """
     # 1. Número de pokémons apresentados
     num_pokemons = len(df)
     
