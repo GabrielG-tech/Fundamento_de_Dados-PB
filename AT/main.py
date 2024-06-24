@@ -10,3 +10,7 @@
 # 3. Realize dois tipos de consulta ao BD, utilizando o Pandas: países com seus totais de medalhas (ouro, prata e bronze) em todos os jogos, ordenado por país, e uma outra consulta escolhida por você, tão difícil quanto a primeira. O resultado de cada consulta deve ser um dataframe.
 
 # 4. A partir dos dataframes das consultas, crie dois arquivos do formato JSON utilizando Pandas. Gerar os arquivos JSON com os parâmetros orientados a registro (record) e com indentação (indent).
+
+# Aula LP: https://drive.google.com/file/d/1XQb-1UFsvaixkgctUcCbAw7lvZ5I_bSe/view
+
+# Tempo: 00:30:30
