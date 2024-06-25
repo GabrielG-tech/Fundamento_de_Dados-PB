@@ -3,7 +3,7 @@ from sqlalchemy import create_engine, func
 from sqlalchemy.orm import sessionmaker
 from models import *
 
-PATH = 'AT\\'
+PATH = 'teste\\'
 CSV_NAME = 'olimpiadas.csv'
 CSV_PATH = f'{PATH}{CSV_NAME}' 
 DB_NAME = 'olimpiadas'
