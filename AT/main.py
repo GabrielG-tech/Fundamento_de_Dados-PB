@@ -1,5 +1,5 @@
+from sqlalchemy import create_engine, MetaData, Table, Column, Integer, String, ForeignKey, Float, func, select
 import pandas as pd
-from sqlalchemy import create_engine, MetaData, Table, Column, Integer, String, ForeignKey, Float
 
 PATH = 'AT\\'
 CSV_NAME = 'olimpiadas.csv'
@@ -7,6 +7,7 @@ CSV_PATH = f'{PATH}{CSV_NAME}'
 DB_NAME = 'olimpiadas'
 DB_PATH = f'{PATH}{DB_NAME}.db'
 
+# Carregar dados do CSV
 df = pd.read_csv(CSV_PATH)
 
 # substituir os valores 'NA' de Medal para 'No Medal'
@@ -29,9 +30,9 @@ df['Weight'] = df['Weight'].round(1).astype(int)
 engine = create_engine('sqlite:///AT/olimpiadas.db')
 metadata = MetaData()
 
-# definir as tabelas conforme o modelo físico
+# mapeamento das tabelas
 atletas = Table('Atletas', metadata,
-    Column('ID', Integer, primary_key=True),
+    Column('ID', Integer, primary_key=True, autoincrement=True),
     Column('Name', String),
     Column('Sex', String(1)),
     Column('Age', Integer),
@@ -41,59 +42,56 @@ atletas = Table('Atletas', metadata,
 )
 
 paises = Table('Paises', metadata,
-    Column('Team', String, primary_key=True),
+    Column('ID', Integer, primary_key=True, autoincrement=True),
+    Column('Team', String),
     Column('NOC', String(3))
 )
 
 jogos_olimpicos = Table('JogosOlimpicos', metadata,
-    Column('Games', String, primary_key=True),
+    Column('ID', Integer, primary_key=True, autoincrement=True),
+    Column('Games', String),
     Column('Year', Integer),
     Column('Season', String),
     Column('City', String)
 )
 
 esportes = Table('Esportes', metadata,
-    Column('Sport', String, primary_key=True)
+    Column('ID', Integer, primary_key=True, autoincrement=True),
+    Column('Sport', String)
 )
 
 eventos = Table('Eventos', metadata,
-    Column('Event', String, primary_key=True),
+    Column('ID', Integer, primary_key=True, autoincrement=True),
+    Column('Event', String),
     Column('Sport', String, ForeignKey('Esportes.Sport'))
 )
 
 medalhas = Table('Medalhas', metadata,
-    Column('ID', Integer, ForeignKey('Atletas.ID')),
-    Column('Name', Integer, ForeignKey('Atletas.Name')),
+    Column('ID', Integer, primary_key=True, autoincrement=True),
+    Column('Name', Integer, ForeignKey('Atletas.ID')),
     Column('Games', String, ForeignKey('JogosOlimpicos.Games')),
     Column('Event', String, ForeignKey('Eventos.Event')),
     Column('Medal', String)
 )
 
 participacao = Table('Participacao', metadata,
-    Column('ID', Integer, ForeignKey('Atletas.ID')),
-    Column('Event', String, ForeignKey('Eventos.Event'))
+    Column('ID', Integer, primary_key=True, autoincrement=True),
+    Column('Name.Atleta', Integer, ForeignKey('Atletas.Name')),
+    Column('ID.Evento', Integer, ForeignKey('Eventos.ID'))
 )
 
 # Criar todas as tabelas no banco de dados
 metadata.create_all(engine)
 
-df_atletas = df[['ID', 'Name', 'Sex', 'Age', 'Height', 'Weight']].drop_duplicates(subset=['ID'])
-
-df_medalhas = df[['ID', 'Name', 'Games', 'Event', 'Medal']]
-
-df_jogos = df[['Games', 'Year', 'Season', 'City']]
-
-df_paises = df[['NOC', 'Team']].drop_duplicates(subset=['Team'])
-
-df_eventos = df[['Event', 'Sport']].drop_duplicates(subset=['Event'])
-
-df_esportes = df[['Sport']].drop_duplicates()
-
-df_participacao = df[['ID', 'Event']]
-
-
-print('Erro ao Inserir tabelas [Teste]')
 # Carregar dados nas tabelas
+df_atletas = df[['ID', 'Name', 'Sex', 'Age', 'Height', 'Weight']].drop_duplicates(subset=['ID'])
+df_medalhas = df[['ID', 'Name', 'Games', 'Event', 'Medal']]
+df_paises = df[['NOC', 'Team']].drop_duplicates(subset=['Team'])
+df_jogos = df[['Games', 'Year', 'Season', 'City']].drop_duplicates()
+df_esportes = df[['Sport']].drop_duplicates()
+df_eventos = df[['Event', 'Sport']].drop_duplicates(subset=['Event'])
+df_participacao = df[['ID', 'Name', 'Event']]
+
 df_atletas.to_sql('Atletas', con=engine, if_exists='replace', index=False)
 df_medalhas.to_sql('Medalhas', con=engine, if_exists='replace', index=False)
 df_paises.to_sql('Paises', con=engine, if_exists='replace', index=False)
@@ -102,49 +100,46 @@ df_esportes.to_sql('Esportes', con=engine, if_exists='replace', index=False)
 df_eventos.to_sql('Eventos', con=engine, if_exists='replace', index=False)
 df_participacao.to_sql('Participacao', con=engine, if_exists='replace', index=False)
 
+def medalhas_por_pais():
+    query = """
+    SELECT
+        P.NOC AS noc,
+        SUM(CASE WHEN M.Medal = 'Gold' THEN 1 ELSE 0 END) AS Ouro,
+        SUM(CASE WHEN M.Medal = 'Silver' THEN 1 ELSE 0 END) AS Prata,
+        SUM(CASE WHEN M.Medal = 'Bronze' THEN 1 ELSE 0 END) AS Bronze,
+        COUNT(M.Medal) AS Total_Medalhas
+    FROM Paises P
+    LEFT JOIN Atletas A ON P.Team = A.Team
+    LEFT JOIN Medalhas M ON A.ID = M.Name
+    WHERE M.Medal != 'No Medal'
+    GROUP BY P.NOC
+    ORDER BY P.NOC;
+    """
+    df_medalhas_paises = pd.read_sql(query, engine)
+    return df_medalhas_paises
 
-# Consultas SQL
-query_medalhas_por_pais = """
-SELECT
-    p.Team AS Pais,
-    SUM(CASE WHEN m.Medal = 'Gold' THEN 1 ELSE 0 END) AS Ouro,
-    SUM(CASE WHEN m.Medal = 'Silver' THEN 1 ELSE 0 END) AS Prata,
-    SUM(CASE WHEN m.Medal = 'Bronze' THEN 1 ELSE 0 END) AS Bronze
-FROM
-    Medalhas m
-JOIN
-    Atletas a ON m.ID = a.ID
-JOIN
-    Paises p ON a.Team = p.Team
-GROUP BY
-    p.Team
-ORDER BY
-    p.Team
-"""
+def participacoes_por_atleta():
+    query = """
+    SELECT A.Name, COUNT(P.ID) AS Total_Participacoes
+    FROM Atletas A
+    LEFT JOIN Participacao P ON A.ID = P.ID_Atleta
+    GROUP BY A.Name
+    ORDER BY Total_Participacoes DESC
+    """
+    df_participacoes_atletas = pd.read_sql(query, engine)
+    return df_participacoes_atletas
 
-query_medalhas_por_atleta = """
-SELECT
-    a.Name AS Atleta,
-    COUNT(m.Medal) AS Total_Medalhas
-FROM
-    Medalhas m
-JOIN
-    Atletas a ON m.ID = a.ID
-GROUP BY
-    a.Name
-ORDER BY
-    Total_Medalhas DESC, a.Name
-"""
 
-# Executar consultas e tratar erros
-try:
-    df_medalhas_por_pais = pd.read_sql(query_medalhas_por_pais, engine)
-    print(df_medalhas_por_pais)
-except Exception as e:
-    print(f"Erro ao executar query_medalhas_por_pais: {str(e)}")
+df_medalhas_paises = medalhas_por_pais()
+# df_participacoes_atletas = participacoes_por_atleta()
 
-try:
-    df_medalhas_por_atleta = pd.read_sql(query_medalhas_por_atleta, engine)
-    print(df_medalhas_por_atleta)
-except Exception as e:
-    print(f"Erro ao executar query_medalhas_por_atleta: {str(e)}")
+# DataFrame para Json
+medalhas_paises_json = df_medalhas_paises.to_json(orient='records', indent=4)
+# participacoes_atletas_json = df_participacoes_atletas.to_json(orient='records', indent=4)
+
+# Salvar Json's
+with open(f'{PATH}medalhas_paises.json', 'w') as arquivo:
+    arquivo.write(medalhas_paises_json)
+
+# with open(f'{PATH}participacoes_atletas.json', 'w') as arquivo:
+#     arquivo.write(participacoes_atletas_json)
