@@ -1,0 +1,12 @@
+Id,Nome,Telefone,Endereco,Email,Disciplina
+1,LP,21999999991,Rua do LP,lpmaia@gmail.com,Java
+1,LP,21999999991,Rua do LP,lpmaia@gmail.com,PB
+2,FM,21999999992,Rua do Felipe,felipe@gmail.com,Java
+2,FM,21999999992,Rua do Felipe,felipe@gmail.com,C#
+2,FM,21999999992,Rua do Felipe,felipe@hotmail.com,Java
+2,FM,21999999992,Rua do Felipe,felipe@hotmail.com,C#
+3,ML,21999999993,,,
+4,Breno,21999999994,Rua do Breno,breno@gmail.com,Java
+4,Breno,21999999994,Rua do Breno,breno@gmail.com,C#
+4,Breno,21999999994,Rua do Breno,breno@gmail.com,PB
+4,Breno,21999999994,Rua do Breno,breno@gmail.com,SQL
