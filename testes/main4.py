@@ -1,5 +1,5 @@
-from sqlalchemy.orm import declarative_base, relationship, sessionmaker
 from sqlalchemy import create_engine, Column, Integer, String, Float, ForeignKey, text
+from sqlalchemy.orm import relationship, sessionmaker, declarative_base
 import pandas as pd
 
 PATH = 'AT\\'
@@ -13,6 +13,9 @@ df = pd.read_csv(CSV_PATH)
 
 # Substituir os valores 'NA' de Medal para 'No Medal'
 df['Medal'] = df['Medal'].fillna('No Medal')
+
+# Substituir os valores 'NA' de Age para '-'
+df['Age'] = df['Age'].fillna('-')
 
 # Substituir os valores 'NA' de Height e Weight pela média
 mean_height = df[df['Height'].notna()]['Height'].round().mean()
@@ -37,7 +40,6 @@ class Atleta(Base):
     ID_Atleta = Column(Integer, primary_key=True, autoincrement=True)
     Name = Column(String)
     Sex = Column(String(1))
-    Age = Column(Integer)
     Height = Column(Float)
     Weight = Column(Float)
 
@@ -76,6 +78,7 @@ class Participacao(Base):
     ID_Team = Column(Integer, ForeignKey('Paises.ID_Pais'))
     ID_Evento = Column(Integer, ForeignKey('Eventos.ID_Evento'))
     Medal = Column(String)
+    Age = Column(Integer)
 
     atleta = relationship('Atleta', back_populates='participacoes')
     evento = relationship('Evento', back_populates='participacoes')
@@ -100,7 +103,6 @@ for index, row in df.iterrows():
     atleta = Atleta(
         Name=row['Name'],
         Sex=row['Sex'],
-        Age=row['Age'],
         Height=row['Height'],
         Weight=row['Weight']
     )
@@ -129,6 +131,7 @@ for index, row in df.iterrows():
 
     participacao = Participacao(
         Medal=row['Medal'],
+        Age=row['Age'],
         atleta=atleta,
         pais=pais,
         evento=evento
@@ -146,7 +149,7 @@ session.commit()
 def medalhas_por_pais():
     query = text("""
     SELECT
-        P.NOC AS noc,
+        P.NOC AS NOC,
         SUM(CASE WHEN M.Medal = 'Gold' THEN 1 ELSE 0 END) AS Ouro,
         SUM(CASE WHEN M.Medal = 'Silver' THEN 1 ELSE 0 END) AS Prata,
         SUM(CASE WHEN M.Medal = 'Bronze' THEN 1 ELSE 0 END) AS Bronze,
@@ -160,22 +163,28 @@ def medalhas_por_pais():
     df_medalhas_paises = pd.read_sql(query, engine)
     return df_medalhas_paises
 
-def participacoes_por_atleta():
+def participacoes_medalhas_por_atleta():
     query = text("""
-    SELECT A.Name, COUNT(P.ID_Participacoes) AS Total_Participacoes
+    SELECT A.Name,
+            P.NOC AS NOC,
+            SUM(CASE WHEN P.Medal = 'Gold' THEN 1 ELSE 0 END) AS Ouro,
+            SUM(CASE WHEN P.Medal = 'Silver' THEN 1 ELSE 0 END) AS Prata,
+            SUM(CASE WHEN P.Medal = 'Bronze' THEN 1 ELSE 0 END) AS Bronze,
+            COUNT(P.ID_Participacoes) AS Total_Participacoes
     FROM Atletas A
     JOIN Participacoes P ON A.ID_Atleta = P.ID_Atleta
+    WHERE P.Medal != 'No Medal'
     GROUP BY A.Name
     ORDER BY Total_Participacoes DESC;
     """)
-    df_participacoes_atletas = pd.read_sql(query, engine)
-    return df_participacoes_atletas
+    df_participacoes_medalhas_por_atleta = pd.read_sql(query, engine)
+    return df_participacoes_medalhas_por_atleta
 
 df_medalhas_paises = medalhas_por_pais()
-df_participacoes_atletas = participacoes_por_atleta()
+df_participacoes_medalhas_por_atleta = participacoes_medalhas_por_atleta()
 
 # Salvar resultados como JSON
 df_medalhas_paises.to_json(f'{PATH}Arquivos_json\\medalhas_paises.json', orient='records', indent=4)
-df_participacoes_atletas.to_json(f'{PATH}Arquivos_json\\participacoes_atletas.json', orient='records', indent=4)
+df_participacoes_medalhas_por_atleta.to_json(f'{PATH}Arquivos_json\\participacoes_medalhas_por_atleta.json', orient='records', indent=4)
 
 session.close()
