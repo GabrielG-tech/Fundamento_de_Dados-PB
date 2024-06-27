@@ -11,15 +11,11 @@ DB_PATH = f'{PATH}{DB_NAME}.db'
 # Conexão com banco de dados SQLite
 engine = create_engine(f'sqlite:///{DB_PATH}')
 Base = declarative_base()
-Session = sessionmaker(bind=engine)
+Session = sessionmaker(bind=engine) # instância para interagir com o banco
 
-def create_database():
-    """Cria as tabelas no banco de dados."""
-    Base.metadata.create_all(engine)
-    print('Banco criado')
+Base.metadata.create_all(engine)
 
-def load_data_from_csv():
-    """Carrega os dados do CSV."""
+def ler_tratar_dados_csv():
     df = pd.read_csv(CSV_PATH)
 
     # Substituir os valores 'NA' de Medal para 'No Medal'
@@ -84,7 +80,7 @@ class Participacao(Base):
     evento = relationship('Evento', back_populates='participacoes')
     pais = relationship('Pais')
 
-def insert_data(df):
+def inserir_dados(df):
     """Insere os dados do DataFrame nas tabelas do banco de dados."""
     session = Session()
     for index, row in df.iterrows():
@@ -154,11 +150,11 @@ def insert_data(df):
     session.close()
     print("Commit realizado")
 
-def medalhas_por_pais():
+def consulta_medalhas_por_pais():
     """Consulta SQL para calcular medalhas por país."""
     query = text("""
     SELECT
-        P.NOC AS noc,
+        P.NOC AS NOC,
         SUM(CASE WHEN M.Medal = 'Gold' THEN 1 ELSE 0 END) AS Ouro,
         SUM(CASE WHEN M.Medal = 'Silver' THEN 1 ELSE 0 END) AS Prata,
         SUM(CASE WHEN M.Medal = 'Bronze' THEN 1 ELSE 0 END) AS Bronze,
@@ -172,27 +168,32 @@ def medalhas_por_pais():
     df_medalhas_paises = pd.read_sql(query, engine)
     return df_medalhas_paises
 
-def participacoes_por_atleta():
-    """Consulta SQL para calcular participações por atleta."""
+def consulta_medalhas_participacoes_por_atleta(): # Consulta SQL para calcular participações, medalhas de ouro, prata e bronze por atleta
     query = text("""
-    SELECT A.Name, COUNT(P.ID_Participacao) AS Total_Participacoes
+    SELECT
+        A.Name as Nome,
+        COUNT(P.ID_Participacao) AS Total_Participacoes,
+        SUM(CASE WHEN P.Medal = 'Gold' THEN 1 ELSE 0 END) AS Ouro,
+        SUM(CASE WHEN P.Medal = 'Silver' THEN 1 ELSE 0 END) AS Prata,
+        SUM(CASE WHEN P.Medal = 'Bronze' THEN 1 ELSE 0 END) AS Bronze
     FROM Atleta A
-    JOIN Participacao P ON A.ID_Atleta = P.ID_Atleta
-    GROUP BY A.Name
+    LEFT JOIN Participacao P ON A.ID_Atleta = P.ID_Atleta
+    GROUP BY Nome
     ORDER BY Total_Participacoes DESC;
     """)
-    df_participacoes_atletas = pd.read_sql(query, engine)
-    return df_participacoes_atletas
+    df_medalhas_participacoes_atletas = pd.read_sql(query, engine)
+    return df_medalhas_participacoes_atletas
 
 def salvar_resultados_json(df_medalhas_paises, df_participacoes_atletas):
-    """Salva os resultados das consultas como JSON."""
     df_medalhas_paises.to_json(f'{PATH}Arquivos_json\\medalhas_paises.json', orient='records', indent=4)
-    df_participacoes_atletas.to_json(f'{PATH}Arquivos_json\\participacoes_atletas.json', orient='records', indent=4)
+    df_participacoes_atletas.to_json(f'{PATH}Arquivos_json\\medalhas_participacoes_por_atleta.json', orient='records', indent=4)
 
-# Executar as funções
-create_database()
-df = load_data_from_csv()
-#insert_data(df)
-df_medalhas_paises = medalhas_por_pais()
-df_participacoes_atletas = participacoes_por_atleta()
-salvar_resultados_json(df_medalhas_paises, df_participacoes_atletas)
+# Execução das funções
+df = ler_tratar_dados_csv()
+# insere_dados(df)
+df_medalhas_paises = consulta_medalhas_por_pais()
+df_medalhas_participacoes_por_atleta = consulta_medalhas_participacoes_por_atleta()
+salvar_resultados_json(df_medalhas_paises, df_medalhas_participacoes_por_atleta)
+
+print(df_medalhas_paises.head(5))
+print(df_medalhas_participacoes_por_atleta.head(5))
