@@ -1,5 +1,5 @@
+from sqlalchemy.orm import declarative_base, relationship, sessionmaker
 from sqlalchemy import create_engine, Column, Integer, String, Float, ForeignKey, text
-from sqlalchemy.orm import relationship, sessionmaker, declarative_base
 import pandas as pd
 
 PATH = 'AT\\'
@@ -41,7 +41,7 @@ class Atleta(Base):
     Height = Column(Float)
     Weight = Column(Float)
 
-    participacoes = relationship('Participacao', back_populates='atleta')
+    participacoes = relationship('Participacao') # , back_populates='atleta'
 
 class Pais(Base):
     __tablename__ = 'Paises'
@@ -56,7 +56,7 @@ class Jogo(Base):
     Year = Column(Integer)
     Season = Column(String)
 
-    eventos = relationship('Evento', back_populates='jogo')
+    eventos = relationship('Evento') # , back_populates='jogo'
 
 class Evento(Base):
     __tablename__ = 'Eventos'
@@ -66,8 +66,8 @@ class Evento(Base):
     City = Column(String)
     ID_Game = Column(Integer, ForeignKey('Jogos.ID_Game'))
 
-    jogo = relationship('Jogo', back_populates='eventos')
-    participacoes = relationship('Participacao', back_populates='evento')
+    jogo = relationship('Jogo') # , back_populates='eventos'
+    participacoes = relationship('Participacao') # , back_populates='evento'
 
 class Participacao(Base):
     __tablename__ = 'Participacoes'
@@ -77,8 +77,8 @@ class Participacao(Base):
     ID_Evento = Column(Integer, ForeignKey('Eventos.ID_Evento'))
     Medal = Column(String)
 
-    atleta = relationship('Atleta', back_populates='participacoes')
-    evento = relationship('Evento', back_populates='participacoes')
+    atleta = relationship('Atleta') # , back_populates='participacoes'
+    evento = relationship('Evento') # , back_populates='participacoes'
     pais = relationship('Pais')
 
 # Criar todas as tabelas no banco de dados
@@ -97,7 +97,6 @@ participacoes_objs = []
 
 # Inserir dados nas tabelas
 for index, row in df.iterrows():
-    # Atletas
     atleta = Atleta(
         Name=row['Name'],
         Sex=row['Sex'],
@@ -107,14 +106,12 @@ for index, row in df.iterrows():
     )
     atletas_objs.append(atleta)
 
-    # Paises
     pais = Pais(
         NOC=row['NOC'],
         Team=row['Team']
     )
     paises_objs.append(pais)
 
-    # Jogos
     jogo = Jogo(
         Games=row['Games'],
         Year=row['Year'],
@@ -122,7 +119,6 @@ for index, row in df.iterrows():
     )
     jogos_objs.append(jogo)
 
-    # Eventos
     evento = Evento(
         Event=row['Event'],
         Sport=row['Sport'],
@@ -131,7 +127,6 @@ for index, row in df.iterrows():
     )
     eventos_objs.append(evento)
 
-    # Participacoes
     participacao = Participacao(
         Medal=row['Medal'],
         atleta=atleta,
@@ -148,7 +143,6 @@ session.add_all(eventos_objs)
 session.add_all(participacoes_objs)
 session.commit()
 
-# Exemplo de consultas
 def medalhas_por_pais():
     query = text("""
     SELECT
@@ -177,13 +171,11 @@ def participacoes_por_atleta():
     df_participacoes_atletas = pd.read_sql(query, engine)
     return df_participacoes_atletas
 
-# Exemplo de uso das funções
 df_medalhas_paises = medalhas_por_pais()
 df_participacoes_atletas = participacoes_por_atleta()
 
-# # Salvar resultados como JSON
-df_medalhas_paises.to_json(f'{PATH}medalhas_paises.json', orient='records', indent=4)
-df_participacoes_atletas.to_json(f'{PATH}participacoes_atletas.json', orient='records', indent=4)
+# Salvar resultados como JSON
+df_medalhas_paises.to_json(f'{PATH}Arquivos_json\\medalhas_paises.json', orient='records', indent=4)
+df_participacoes_atletas.to_json(f'{PATH}Arquivos_json\\participacoes_atletas.json', orient='records', indent=4)
 
-# Fechar a sessão após o uso
 session.close()

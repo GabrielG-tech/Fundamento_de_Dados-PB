@@ -1,9 +1,10 @@
-from sqlalchemy import create_engine, MetaData, Table, Column, Integer, String, ForeignKey, Float, text
+from sqlalchemy.orm import declarative_base, relationship, sessionmaker
+from sqlalchemy import create_engine, Column, Integer, String, Float, ForeignKey, text
 import pandas as pd
 
 PATH = 'AT\\'
 CSV_NAME = 'olimpiadas.csv'
-CSV_PATH = f'{PATH}{CSV_NAME}' 
+CSV_PATH = f'{PATH}{CSV_NAME}'
 DB_NAME = 'olimpiadas'
 DB_PATH = f'{PATH}{DB_NAME}.db'
 
@@ -28,85 +29,119 @@ df['Weight'] = df['Weight'].round(1).astype(int)
 
 # Conexão com banco de dados SQLite
 engine = create_engine(f'sqlite:///{DB_PATH}')
-metadata = MetaData()
+Base = declarative_base()
 
-# Mapeamento das tabelas
-atletas = Table('Atletas', metadata,
-    Column('ID_Atleta', Integer, primary_key=True, autoincrement=True),
-    Column('Name', String),
-    Column('Sex', String(1)),
-    Column('Age', Integer),
-    Column('Height', Float),
-    Column('Weight', Float)
-)
+# Definição das classes de modelo
+class Atleta(Base):
+    __tablename__ = 'Atletas'
+    ID_Atleta = Column(Integer, primary_key=True, autoincrement=True)
+    Name = Column(String)
+    Sex = Column(String(1))
+    Age = Column(Integer)
+    Height = Column(Float)
+    Weight = Column(Float)
 
-paises = Table('Paises', metadata,
-    Column('ID_Pais', Integer, primary_key=True, autoincrement=True),
-    Column('NOC', String(3)),
-    Column('Team', String)
-)
+    participacoes = relationship('Participacao') # , back_populates='atleta'
 
-jogos = Table('Jogos', metadata,
-    Column('ID_Game', Integer, primary_key=True, autoincrement=True),
-    Column('Games', String),
-    Column('Year', Integer),
-    Column('Season', String)
-)
+class Pais(Base):
+    __tablename__ = 'Paises'
+    ID_Pais = Column(Integer, primary_key=True, autoincrement=True)
+    NOC = Column(String(3))
+    Team = Column(String)
 
-eventos = Table('Eventos', metadata,
-    Column('ID_Evento', Integer, primary_key=True, autoincrement=True),
-    Column('Event', String),
-    Column('Sport', String),
-    Column('City', String),
-    Column('ID_Game', Integer, ForeignKey('Jogos.ID_Game'))
-)
+class Jogo(Base):
+    __tablename__ = 'Jogos'
+    ID_Game = Column(Integer, primary_key=True, autoincrement=True)
+    Games = Column(String)
+    Year = Column(Integer)
+    Season = Column(String)
 
-participacoes = Table('Participacoes', metadata,
-    Column('ID_Participacoes', Integer, primary_key=True, autoincrement=True),
-    Column('ID_Atleta', Integer, ForeignKey('Atletas.ID_Atleta')),
-    Column('ID_Team', Integer, ForeignKey('Paises.ID_Pais')),
-    Column('ID_Evento', Integer, ForeignKey('Eventos.ID_Evento')),
-    Column('Medal', String)
-)
+    eventos = relationship('Evento') # , back_populates='jogo'
+
+class Evento(Base):
+    __tablename__ = 'Eventos'
+    ID_Evento = Column(Integer, primary_key=True, autoincrement=True)
+    Event = Column(String)
+    Sport = Column(String)
+    City = Column(String)
+    ID_Game = Column(Integer, ForeignKey('Jogos.ID_Game'))
+
+    jogo = relationship('Jogo') # , back_populates='eventos'
+    participacoes = relationship('Participacao') # , back_populates='evento'
+
+class Participacao(Base):
+    __tablename__ = 'Participacoes'
+    ID_Participacoes = Column(Integer, primary_key=True, autoincrement=True)
+    ID_Atleta = Column(Integer, ForeignKey('Atletas.ID_Atleta'))
+    ID_Team = Column(Integer, ForeignKey('Paises.ID_Pais'))
+    ID_Evento = Column(Integer, ForeignKey('Eventos.ID_Evento'))
+    Medal = Column(String)
+
+    atleta = relationship('Atleta') # , back_populates='participacoes'
+    evento = relationship('Evento') # , back_populates='participacoes'
+    pais = relationship('Pais')
 
 # Criar todas as tabelas no banco de dados
-metadata.create_all(engine)
+Base.metadata.create_all(engine)
 
-# Preparando os DataFrames
-atletas_df = df[['Name', 'Sex', 'Age', 'Height', 'Weight']].drop_duplicates().reset_index(drop=True)
-paises_df = df[['NOC', 'Team']].drop_duplicates().reset_index(drop=True)
-jogos_df = df[['Games', 'Year', 'Season']].drop_duplicates().reset_index(drop=True)
+# Criar uma sessão para interagir com o banco de dados
+Session = sessionmaker(bind=engine)
+session = Session()
 
-# Inserindo dados na tabela 'Jogos' para obter os IDs
-jogos_df.to_sql('Jogos', engine, if_exists='replace', index=False)
+# Preparando os objetos para inserção
+atletas_objs = []
+paises_objs = []
+jogos_objs = []
+eventos_objs = []
+participacoes_objs = []
 
-# Verificar a estrutura da tabela 'Jogos' após a criação
-print(pd.read_sql('PRAGMA table_info(Jogos)', engine))
+# Inserir dados nas tabelas
+for index, row in df.iterrows():
+    atleta = Atleta(
+        Name=row['Name'],
+        Sex=row['Sex'],
+        Age=row['Age'],
+        Height=row['Height'],
+        Weight=row['Weight']
+    )
+    atletas_objs.append(atleta)
 
-# Mapeando o ID_Game para a tabela Eventos
-jogos_ids = pd.read_sql('SELECT ID_Game FROM Jogos', engine)
-eventos_df = df[['Event', 'Sport', 'City', 'Games']].drop_duplicates().reset_index(drop=True)
-eventos_df = eventos_df.merge(jogos_ids, on='Games', how='left')
-eventos_df = eventos_df.drop(columns=['Games'])
+    pais = Pais(
+        NOC=row['NOC'],
+        Team=row['Team']
+    )
+    paises_objs.append(pais)
 
-# Inserindo dados nas tabelas 'Atletas', 'Paises' e 'Eventos'
-atletas_df.to_sql('Atletas', engine, if_exists='replace', index=False)
-paises_df.to_sql('Paises', engine, if_exists='replace', index=False)
-eventos_df.to_sql('Eventos', engine, if_exists='replace', index=False)
+    jogo = Jogo(
+        Games=row['Games'],
+        Year=row['Year'],
+        Season=row['Season']
+    )
+    jogos_objs.append(jogo)
 
-# Preparando o DataFrame de Participacoes
-atletas_ids = pd.read_sql('SELECT ID_Atleta, Name FROM Atletas', engine)
-paises_ids = pd.read_sql('SELECT ID_Pais, NOC FROM Paises', engine)
-eventos_ids = pd.read_sql('SELECT ID_Evento, Event FROM Eventos', engine)
+    evento = Evento(
+        Event=row['Event'],
+        Sport=row['Sport'],
+        City=row['City'],
+        jogo=jogo
+    )
+    eventos_objs.append(evento)
 
-participacoes_df = df[['Name', 'NOC', 'Event', 'Medal']]
-participacoes_df = participacoes_df.merge(atletas_ids, on='Name', how='left')
-participacoes_df = participacoes_df.merge(paises_ids, on='NOC', how='left')
-participacoes_df = participacoes_df.merge(eventos_ids, on='Event', how='left')
-participacoes_df = participacoes_df[['ID_Atleta', 'ID_Pais', 'ID_Evento', 'Medal']]
+    participacao = Participacao(
+        Medal=row['Medal'],
+        atleta=atleta,
+        pais=pais,
+        evento=evento
+    )
+    participacoes_objs.append(participacao)
 
-# Inserindo dados na tabela 'Participacoes'
-participacoes_df.to_sql('Participacoes', engine, if_exists='replace', index=False)
+# Adicionar objetos à sessão e commit para o banco de dados
+session.add_all(atletas_objs)
+session.add_all(paises_objs)
+session.add_all(jogos_objs)
+session.add_all(eventos_objs)
+session.add_all(participacoes_objs)
+session.commit()
 
 def medalhas_por_pais():
     query = text("""
@@ -136,16 +171,11 @@ def participacoes_por_atleta():
     df_participacoes_atletas = pd.read_sql(query, engine)
     return df_participacoes_atletas
 
-# df_medalhas_paises = medalhas_por_pais()
-# df_participacoes_atletas = participacoes_por_atleta()
+df_medalhas_paises = medalhas_por_pais()
+df_participacoes_atletas = participacoes_por_atleta()
 
-# # DataFrame para Json
-# medalhas_paises_json = df_medalhas_paises.to_json(orient='records', indent=4)
-# participacoes_atletas_json = df_participacoes_atletas.to_json(orient='records', indent=4)
+# Salvar resultados como JSON
+df_medalhas_paises.to_json(f'{PATH}Arquivos_json\\medalhas_paises.json', orient='records', indent=4)
+df_participacoes_atletas.to_json(f'{PATH}Arquivos_json\\participacoes_atletas.json', orient='records', indent=4)
 
-# # Salvar Json's
-# with open(f'{PATH}medalhas_paises.json', 'w') as arquivo:
-#     arquivo.write(medalhas_paises_json)
-
-# with open(f'{PATH}participacoes_atletas.json', 'w') as arquivo:
-#     arquivo.write(participacoes_atletas_json)
+session.close()
