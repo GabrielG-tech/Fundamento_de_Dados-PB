@@ -43,17 +43,17 @@
     },
     {
         "noc":"AUS",
-        "Ouro":348,
+        "Ouro":347,
         "Prata":455,
-        "Bronze":517,
+        "Bronze":518,
         "Total_Medalhas":1320
     },
     {
         "noc":"AUT",
-        "Ouro":108,
+        "Ouro":107,
         "Prata":186,
         "Bronze":156,
-        "Total_Medalhas":450
+        "Total_Medalhas":449
     },
     {
         "noc":"AZE",
@@ -86,9 +86,9 @@
     {
         "noc":"BEL",
         "Ouro":98,
-        "Prata":197,
-        "Bronze":173,
-        "Total_Medalhas":468
+        "Prata":198,
+        "Bronze":175,
+        "Total_Medalhas":471
     },
     {
         "noc":"BER",
@@ -108,8 +108,8 @@
         "noc":"BOH",
         "Ouro":0,
         "Prata":1,
-        "Bronze":11,
-        "Total_Medalhas":12
+        "Bronze":12,
+        "Total_Medalhas":13
     },
     {
         "noc":"BOT",
@@ -177,9 +177,9 @@
     {
         "noc":"COL",
         "Ouro":5,
-        "Prata":9,
+        "Prata":8,
         "Bronze":14,
-        "Total_Medalhas":28
+        "Total_Medalhas":27
     },
     {
         "noc":"CRC",
@@ -218,10 +218,10 @@
     },
     {
         "noc":"DEN",
-        "Ouro":179,
+        "Ouro":182,
         "Prata":241,
         "Bronze":177,
-        "Total_Medalhas":597
+        "Total_Medalhas":600
     },
     {
         "noc":"DJI",
@@ -302,10 +302,10 @@
     },
     {
         "noc":"FRA",
-        "Ouro":501,
-        "Prata":610,
-        "Bronze":666,
-        "Total_Medalhas":1777
+        "Ouro":505,
+        "Prata":618,
+        "Bronze":661,
+        "Total_Medalhas":1784
     },
     {
         "noc":"FRG",
@@ -323,10 +323,10 @@
     },
     {
         "noc":"GBR",
-        "Ouro":678,
-        "Prata":739,
-        "Bronze":651,
-        "Total_Medalhas":2068
+        "Ouro":681,
+        "Prata":734,
+        "Bronze":654,
+        "Total_Medalhas":2069
     },
     {
         "noc":"GDR",
@@ -344,10 +344,10 @@
     },
     {
         "noc":"GER",
-        "Ouro":745,
+        "Ouro":744,
         "Prata":674,
-        "Bronze":746,
-        "Total_Medalhas":2165
+        "Bronze":745,
+        "Total_Medalhas":2163
     },
     {
         "noc":"GHA",
@@ -359,9 +359,9 @@
     {
         "noc":"GRE",
         "Ouro":62,
-        "Prata":109,
+        "Prata":108,
         "Bronze":84,
-        "Total_Medalhas":255
+        "Total_Medalhas":254
     },
     {
         "noc":"GRN",
@@ -386,10 +386,10 @@
     },
     {
         "noc":"HAI",
-        "Ouro":1,
+        "Ouro":0,
         "Prata":1,
         "Bronze":5,
-        "Total_Medalhas":7
+        "Total_Medalhas":6
     },
     {
         "noc":"HKG",
@@ -470,10 +470,10 @@
     },
     {
         "noc":"ITA",
-        "Ouro":575,
+        "Ouro":573,
         "Prata":531,
         "Bronze":531,
-        "Total_Medalhas":1637
+        "Total_Medalhas":1635
     },
     {
         "noc":"JAM",
@@ -605,8 +605,8 @@
         "noc":"MEX",
         "Ouro":30,
         "Prata":26,
-        "Bronze":54,
-        "Total_Medalhas":110
+        "Bronze":55,
+        "Total_Medalhas":111
     },
     {
         "noc":"MGL",
@@ -621,6 +621,13 @@
         "Prata":0,
         "Bronze":1,
         "Total_Medalhas":1
+    },
+    {
+        "noc":"MLT",
+        "Ouro":2,
+        "Prata":0,
+        "Bronze":0,
+        "Total_Medalhas":2
     },
     {
         "noc":"MNE",
@@ -660,9 +667,9 @@
     {
         "noc":"NED",
         "Ouro":287,
-        "Prata":340,
-        "Bronze":413,
-        "Total_Medalhas":1040
+        "Prata":342,
+        "Bronze":412,
+        "Total_Medalhas":1041
     },
     {
         "noc":"NEP",
@@ -694,10 +701,10 @@
     },
     {
         "noc":"NZL",
-        "Ouro":90,
+        "Ouro":89,
         "Prata":56,
         "Bronze":82,
-        "Total_Medalhas":228
+        "Total_Medalhas":227
     },
     {
         "noc":"PAK",
@@ -862,10 +869,10 @@
     },
     {
         "noc":"SWE",
-        "Ouro":479,
+        "Ouro":478,
         "Prata":522,
         "Bronze":535,
-        "Total_Medalhas":1536
+        "Total_Medalhas":1535
     },
     {
         "noc":"SYR",
@@ -974,10 +981,10 @@
     },
     {
         "noc":"URS",
-        "Ouro":1082,
+        "Ouro":1080,
         "Prata":732,
         "Bronze":689,
-        "Total_Medalhas":2503
+        "Total_Medalhas":2501
     },
     {
         "noc":"URU",
@@ -988,10 +995,10 @@
     },
     {
         "noc":"USA",
-        "Ouro":2638,
-        "Prata":1641,
-        "Bronze":1358,
-        "Total_Medalhas":5637
+        "Ouro":2636,
+        "Prata":1637,
+        "Bronze":1357,
+        "Total_Medalhas":5630
     },
     {
         "noc":"UZB",

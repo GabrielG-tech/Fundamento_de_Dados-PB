@@ -47,7 +47,7 @@ class Pais(Base):
     NOC = Column(String(3))
     Team = Column(String)
 
-class Jogo(Base):
+class Jogos(Base):
     __tablename__ = 'Jogos'
     ID_Game = Column(Integer, primary_key=True, autoincrement=True)
     Games = Column(String)
@@ -61,7 +61,7 @@ class Evento(Base):
     Sport = Column(String)
     City = Column(String)
     ID_Game = Column(Integer, ForeignKey('Jogos.ID_Game'))
-    jogo = relationship('Jogo', back_populates='eventos')
+    jogos = relationship('Jogos', back_populates='eventos')
 
 class Participacao(Base):
     __tablename__ = 'Participacoes'
@@ -80,13 +80,14 @@ paises_df = df[['NOC', 'Team']].drop_duplicates().reset_index(drop=True)
 jogos_df = df[['Games', 'Year', 'Season']].drop_duplicates().reset_index(drop=True)
 
 # Inserindo dados na tabela 'Jogos' para obter os IDs
-jogos_df.to_sql('Jogos', engine, if_exists='replace', index=False)
 
 # Mapeando o ID_Game para a tabela Eventos
 jogos_ids = pd.read_sql('SELECT ID_Game FROM Jogos', engine)
 eventos_df = df[['Event', 'Sport', 'City', 'Games']].drop_duplicates().reset_index(drop=True)
 eventos_df = eventos_df.merge(jogos_ids, on='Games', how='left')
 eventos_df = eventos_df.drop(columns=['Games'])
+
+jogos_df.to_sql('Jogos', engine, if_exists='replace', index=False)
 
 # Inserindo dados nas tabelas 'Atletas', 'Paises' e 'Eventos'
 atletas_df.to_sql('Atletas', engine, if_exists='replace', index=False)

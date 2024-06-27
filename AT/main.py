@@ -14,27 +14,23 @@ df = pd.read_csv(CSV_PATH)
 # Substituir os valores 'NA' de Medal para 'No Medal'
 df['Medal'] = df['Medal'].fillna('No Medal')
 
-# Substituir os valores 'NA' de Height e Weight pela média
-mean_height = df[df['Height'].notna()]['Height'].round().mean()
-mean_weight = df[df['Weight'].notna()]['Weight'].round().mean()
+# Arredondar valores de altura e peso
+df['Height'] = pd.to_numeric(df['Height'], errors='coerce').round(2) / 100  # Transforma em metros
+df['Weight'] = pd.to_numeric(df['Weight'], errors='coerce').round(1)
 
-df['Height'] = pd.to_numeric(df['Height'], errors='coerce')
-df['Weight'] = pd.to_numeric(df['Weight'], errors='coerce')
-
-df['Height'] = df['Height'].fillna(mean_height)
-df['Weight'] = df['Weight'].fillna(mean_weight)
-
-df['Height'] = df['Height'].round().astype(int) / 100
-df['Weight'] = df['Weight'].round(1).astype(int)
+# Substituir NaN por None na coluna Height e Weight
+df['Height'] = df['Height'].where(pd.notnull(df['Height']), None)
+df['Weight'] = df['Weight'].where(pd.notnull(df['Weight']), None)
 
 # Conexão com banco de dados SQLite
 engine = create_engine(f'sqlite:///{DB_PATH}')
 Base = declarative_base()
+print('Banco criado')
 
 # Definição das classes de modelo
 class Atleta(Base):
-    __tablename__ = 'Atletas'
-    ID_Atleta = Column(Integer, primary_key=True, autoincrement=True)
+    __tablename__ = 'Atleta'
+    ID_Atleta = Column(Integer, primary_key=True)
     Name = Column(String)
     Sex = Column(String(1))
     Age = Column(Integer)
@@ -44,14 +40,14 @@ class Atleta(Base):
     participacoes = relationship('Participacao', back_populates='atleta')
 
 class Pais(Base):
-    __tablename__ = 'Paises'
+    __tablename__ = 'Pais'
     ID_Pais = Column(Integer, primary_key=True, autoincrement=True)
     NOC = Column(String(3))
     Team = Column(String)
 
 class Jogo(Base):
-    __tablename__ = 'Jogos'
-    ID_Game = Column(Integer, primary_key=True, autoincrement=True)
+    __tablename__ = 'Jogo'
+    ID_Jogo = Column(Integer, primary_key=True, autoincrement=True)
     Games = Column(String)
     Year = Column(Integer)
     Season = Column(String)
@@ -59,22 +55,22 @@ class Jogo(Base):
     eventos = relationship('Evento', back_populates='jogo')
 
 class Evento(Base):
-    __tablename__ = 'Eventos'
+    __tablename__ = 'Evento'
     ID_Evento = Column(Integer, primary_key=True, autoincrement=True)
     Event = Column(String)
     Sport = Column(String)
     City = Column(String)
-    ID_Game = Column(Integer, ForeignKey('Jogos.ID_Game'))
+    ID_Jogo = Column(Integer, ForeignKey('Jogo.ID_Jogo'))
 
     jogo = relationship('Jogo', back_populates='eventos')
     participacoes = relationship('Participacao', back_populates='evento')
 
 class Participacao(Base):
-    __tablename__ = 'Participacoes'
-    ID_Participacoes = Column(Integer, primary_key=True, autoincrement=True)
-    ID_Atleta = Column(Integer, ForeignKey('Atletas.ID_Atleta'))
-    ID_Team = Column(Integer, ForeignKey('Paises.ID_Pais'))
-    ID_Evento = Column(Integer, ForeignKey('Eventos.ID_Evento'))
+    __tablename__ = 'Participacao'
+    ID_Participacao = Column(Integer, primary_key=True, autoincrement=True)
+    ID_Atleta = Column(Integer, ForeignKey('Atleta.ID_Atleta'))
+    ID_Team = Column(Integer, ForeignKey('Pais.ID_Pais'))
+    ID_Evento = Column(Integer, ForeignKey('Evento.ID_Evento'))
     Medal = Column(String)
 
     atleta = relationship('Atleta', back_populates='participacoes')
@@ -83,65 +79,85 @@ class Participacao(Base):
 
 # Criar todas as tabelas no banco de dados
 Base.metadata.create_all(engine)
+print("Tabelas criadas")
 
 # Criar uma sessão para interagir com o banco de dados
 Session = sessionmaker(bind=engine)
 session = Session()
-
-# Preparando os objetos para inserção
-atletas_objs = []
-paises_objs = []
-jogos_objs = []
-eventos_objs = []
-participacoes_objs = []
+print("Sessão iniciada")
 
 # Inserir dados nas tabelas
 for index, row in df.iterrows():
-    atleta = Atleta(
-        Name=row['Name'],
-        Sex=row['Sex'],
-        Age=row['Age'],
-        Height=row['Height'],
-        Weight=row['Weight']
-    )
-    atletas_objs.append(atleta)
+    print(f"{row['ID']}")
+    # Inserir atleta se não existir
+    atleta_existente = session.query(Atleta).filter_by(ID_Atleta=row['ID']).first()
+    if not atleta_existente:
+        atleta = Atleta(
+            ID_Atleta=row['ID'],
+            Name=row['Name'],
+            Sex=row['Sex'],
+            Age=row['Age'],
+            Height=row['Height'],
+            Weight=row['Weight']
+        )
+        session.add(atleta)
 
-    pais = Pais(
-        NOC=row['NOC'],
-        Team=row['Team']
-    )
-    paises_objs.append(pais)
+    # Inserir país se não existir
+    pais_existente = session.query(Pais).filter_by(Team=row['Team']).first()
+    if pais_existente==None:
+        pais = Pais(
+            NOC=row['NOC'],
+            Team=row['Team']
+        )
+        session.add(pais)
+        session.flush()  # Para obter o ID_Pais gerado automaticamente
+        session.commit()
 
-    jogo = Jogo(
-        Games=row['Games'],
-        Year=row['Year'],
-        Season=row['Season']
-    )
-    jogos_objs.append(jogo)
+        # print(f"{_id_pais} - {pais_existente} - {row['Team']}")
+        
+    _id_pais = session.query(Pais).filter_by(Team=row['Team']).first().ID_Pais
+    
 
-    evento = Evento(
-        Event=row['Event'],
-        Sport=row['Sport'],
-        City=row['City'],
-        jogo=jogo
-    )
-    eventos_objs.append(evento)
+    # Inserir jogo se não existir
+    jogo_existente = session.query(Jogo).filter_by(Games=row['Games'], Year=row['Year'], Season=row['Season']).first()
+    if not jogo_existente:
+        jogo = Jogo(
+            Games=row['Games'],
+            Year=row['Year'],
+            Season=row['Season']
+        )
+        session.add(jogo)
+        session.flush()  # Para obter o ID_Jogo gerado automaticamente
+    
+    _id_jogo = session.query(Jogo).filter_by(Games=row['Games'], Year=row['Year'], Season=row['Season']).first().ID_Jogo
 
+    # Inserir evento se não existir
+    evento_existente = session.query(Evento).filter_by(Event=row['Event'], Sport=row['Sport'], City=row['City'], ID_Jogo=_id_jogo).first()
+    if not evento_existente:
+        evento = Evento(
+            Event=row['Event'],
+            Sport=row['Sport'],
+            City=row['City'],
+            ID_Jogo=_id_jogo
+        )
+        session.add(evento)
+        session.flush()  # Para obter o ID_Evento gerado automaticamente
+    
+    _id_evento = session.query(Evento).filter_by(Event=row['Event'], Sport=row['Sport'], City=row['City'], ID_Jogo=_id_jogo).first().ID_Evento
+
+    # Inserir participação
     participacao = Participacao(
-        Medal=row['Medal'],
-        atleta=atleta,
-        pais=pais,
-        evento=evento
+        ID_Atleta=row['ID'],
+        ID_Team=_id_pais,
+        ID_Evento=_id_evento,
+        Medal=row['Medal']
     )
-    participacoes_objs.append(participacao)
+    session.add(participacao)
+    
 
-# Adicionar objetos à sessão e commit para o banco de dados
-session.add_all(atletas_objs)
-session.add_all(paises_objs)
-session.add_all(jogos_objs)
-session.add_all(eventos_objs)
-session.add_all(participacoes_objs)
+# Commitar todas as mudanças no final
 session.commit()
+print("Commit realizado")
 
 def medalhas_por_pais():
     query = text("""
@@ -151,8 +167,8 @@ def medalhas_por_pais():
         SUM(CASE WHEN M.Medal = 'Silver' THEN 1 ELSE 0 END) AS Prata,
         SUM(CASE WHEN M.Medal = 'Bronze' THEN 1 ELSE 0 END) AS Bronze,
         COUNT(M.Medal) AS Total_Medalhas
-    FROM Paises P
-    JOIN Participacoes M ON P.ID_Pais = M.ID_Team
+    FROM Pais P
+    JOIN Participacao M ON P.ID_Pais = M.ID_Team
     WHERE M.Medal != 'No Medal'
     GROUP BY P.NOC
     ORDER BY P.NOC;
@@ -162,9 +178,9 @@ def medalhas_por_pais():
 
 def participacoes_por_atleta():
     query = text("""
-    SELECT A.Name, COUNT(P.ID_Participacoes) AS Total_Participacoes
-    FROM Atletas A
-    JOIN Participacoes P ON A.ID_Atleta = P.ID_Atleta
+    SELECT A.Name, COUNT(P.ID_Participacao) AS Total_Participacoes
+    FROM Atleta A
+    JOIN Participacao P ON A.ID_Atleta = P.ID_Atleta
     GROUP BY A.Name
     ORDER BY Total_Participacoes DESC;
     """)
