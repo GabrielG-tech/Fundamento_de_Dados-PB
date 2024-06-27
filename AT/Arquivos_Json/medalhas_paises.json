@@ -1,1049 +1,1049 @@
 [
     {
-        "noc":"AFG",
+        "NOC":"AFG",
         "Ouro":0,
         "Prata":0,
         "Bronze":2,
         "Total_Medalhas":2
     },
     {
-        "noc":"AHO",
+        "NOC":"AHO",
         "Ouro":0,
         "Prata":1,
         "Bronze":0,
         "Total_Medalhas":1
     },
     {
-        "noc":"ALG",
+        "NOC":"ALG",
         "Ouro":5,
         "Prata":4,
         "Bronze":8,
         "Total_Medalhas":17
     },
     {
-        "noc":"ANZ",
+        "NOC":"ANZ",
         "Ouro":20,
         "Prata":4,
         "Bronze":5,
         "Total_Medalhas":29
     },
     {
-        "noc":"ARG",
+        "NOC":"ARG",
         "Ouro":91,
         "Prata":92,
         "Bronze":91,
         "Total_Medalhas":274
     },
     {
-        "noc":"ARM",
+        "NOC":"ARM",
         "Ouro":2,
         "Prata":5,
         "Bronze":9,
         "Total_Medalhas":16
     },
     {
-        "noc":"AUS",
+        "NOC":"AUS",
         "Ouro":347,
         "Prata":455,
         "Bronze":518,
         "Total_Medalhas":1320
     },
     {
-        "noc":"AUT",
+        "NOC":"AUT",
         "Ouro":107,
         "Prata":186,
         "Bronze":156,
         "Total_Medalhas":449
     },
     {
-        "noc":"AZE",
+        "NOC":"AZE",
         "Ouro":7,
         "Prata":12,
         "Bronze":25,
         "Total_Medalhas":44
     },
     {
-        "noc":"BAH",
+        "NOC":"BAH",
         "Ouro":14,
         "Prata":11,
         "Bronze":15,
         "Total_Medalhas":40
     },
     {
-        "noc":"BAR",
+        "NOC":"BAR",
         "Ouro":0,
         "Prata":0,
         "Bronze":1,
         "Total_Medalhas":1
     },
     {
-        "noc":"BDI",
+        "NOC":"BDI",
         "Ouro":1,
         "Prata":1,
         "Bronze":0,
         "Total_Medalhas":2
     },
     {
-        "noc":"BEL",
+        "NOC":"BEL",
         "Ouro":98,
         "Prata":198,
         "Bronze":175,
         "Total_Medalhas":471
     },
     {
-        "noc":"BER",
+        "NOC":"BER",
         "Ouro":0,
         "Prata":0,
         "Bronze":1,
         "Total_Medalhas":1
     },
     {
-        "noc":"BLR",
+        "NOC":"BLR",
         "Ouro":24,
         "Prata":44,
         "Bronze":71,
         "Total_Medalhas":139
     },
     {
-        "noc":"BOH",
+        "NOC":"BOH",
         "Ouro":0,
         "Prata":1,
         "Bronze":12,
         "Total_Medalhas":13
     },
     {
-        "noc":"BOT",
+        "NOC":"BOT",
         "Ouro":0,
         "Prata":1,
         "Bronze":0,
         "Total_Medalhas":1
     },
     {
-        "noc":"BRA",
+        "NOC":"BRA",
         "Ouro":109,
         "Prata":175,
         "Bronze":191,
         "Total_Medalhas":475
     },
     {
-        "noc":"BRN",
+        "NOC":"BRN",
         "Ouro":1,
         "Prata":1,
         "Bronze":1,
         "Total_Medalhas":3
     },
     {
-        "noc":"BUL",
+        "NOC":"BUL",
         "Ouro":54,
         "Prata":144,
         "Bronze":144,
         "Total_Medalhas":342
     },
     {
-        "noc":"CAN",
+        "NOC":"CAN",
         "Ouro":463,
         "Prata":438,
         "Bronze":451,
         "Total_Medalhas":1352
     },
     {
-        "noc":"CHI",
+        "NOC":"CHI",
         "Ouro":3,
         "Prata":9,
         "Bronze":20,
         "Total_Medalhas":32
     },
     {
-        "noc":"CHN",
+        "NOC":"CHN",
         "Ouro":350,
         "Prata":347,
         "Bronze":292,
         "Total_Medalhas":989
     },
     {
-        "noc":"CIV",
+        "NOC":"CIV",
         "Ouro":1,
         "Prata":1,
         "Bronze":1,
         "Total_Medalhas":3
     },
     {
-        "noc":"CMR",
+        "NOC":"CMR",
         "Ouro":20,
         "Prata":1,
         "Bronze":1,
         "Total_Medalhas":22
     },
     {
-        "noc":"COL",
+        "NOC":"COL",
         "Ouro":5,
         "Prata":8,
         "Bronze":14,
         "Total_Medalhas":27
     },
     {
-        "noc":"CRC",
+        "NOC":"CRC",
         "Ouro":1,
         "Prata":1,
         "Bronze":2,
         "Total_Medalhas":4
     },
     {
-        "noc":"CRO",
+        "NOC":"CRO",
         "Ouro":58,
         "Prata":54,
         "Bronze":37,
         "Total_Medalhas":149
     },
     {
-        "noc":"CUB",
+        "NOC":"CUB",
         "Ouro":164,
         "Prata":129,
         "Bronze":116,
         "Total_Medalhas":409
     },
     {
-        "noc":"CYP",
+        "NOC":"CYP",
         "Ouro":0,
         "Prata":1,
         "Bronze":0,
         "Total_Medalhas":1
     },
     {
-        "noc":"CZE",
+        "NOC":"CZE",
         "Ouro":42,
         "Prata":36,
         "Bronze":66,
         "Total_Medalhas":144
     },
     {
-        "noc":"DEN",
+        "NOC":"DEN",
         "Ouro":182,
         "Prata":241,
         "Bronze":177,
         "Total_Medalhas":600
     },
     {
-        "noc":"DJI",
+        "NOC":"DJI",
         "Ouro":0,
         "Prata":0,
         "Bronze":1,
         "Total_Medalhas":1
     },
     {
-        "noc":"DOM",
+        "NOC":"DOM",
         "Ouro":3,
         "Prata":2,
         "Bronze":2,
         "Total_Medalhas":7
     },
     {
-        "noc":"ECU",
+        "NOC":"ECU",
         "Ouro":1,
         "Prata":1,
         "Bronze":0,
         "Total_Medalhas":2
     },
     {
-        "noc":"EGY",
+        "NOC":"EGY",
         "Ouro":7,
         "Prata":8,
         "Bronze":12,
         "Total_Medalhas":27
     },
     {
-        "noc":"ERI",
+        "NOC":"ERI",
         "Ouro":0,
         "Prata":0,
         "Bronze":1,
         "Total_Medalhas":1
     },
     {
-        "noc":"ESP",
+        "NOC":"ESP",
         "Ouro":110,
         "Prata":243,
         "Bronze":136,
         "Total_Medalhas":489
     },
     {
-        "noc":"EST",
+        "NOC":"EST",
         "Ouro":13,
         "Prata":12,
         "Bronze":25,
         "Total_Medalhas":50
     },
     {
-        "noc":"ETH",
+        "NOC":"ETH",
         "Ouro":22,
         "Prata":9,
         "Bronze":22,
         "Total_Medalhas":53
     },
     {
-        "noc":"EUN",
+        "NOC":"EUN",
         "Ouro":127,
         "Prata":71,
         "Bronze":81,
         "Total_Medalhas":279
     },
     {
-        "noc":"FIJ",
+        "NOC":"FIJ",
         "Ouro":13,
         "Prata":0,
         "Bronze":0,
         "Total_Medalhas":13
     },
     {
-        "noc":"FIN",
+        "NOC":"FIN",
         "Ouro":198,
         "Prata":270,
         "Bronze":432,
         "Total_Medalhas":900
     },
     {
-        "noc":"FRA",
+        "NOC":"FRA",
         "Ouro":505,
         "Prata":618,
         "Bronze":661,
         "Total_Medalhas":1784
     },
     {
-        "noc":"FRG",
+        "NOC":"FRG",
         "Ouro":159,
         "Prata":194,
         "Bronze":233,
         "Total_Medalhas":586
     },
     {
-        "noc":"GAB",
+        "NOC":"GAB",
         "Ouro":0,
         "Prata":1,
         "Bronze":0,
         "Total_Medalhas":1
     },
     {
-        "noc":"GBR",
+        "NOC":"GBR",
         "Ouro":681,
         "Prata":734,
         "Bronze":654,
         "Total_Medalhas":2069
     },
     {
-        "noc":"GDR",
+        "NOC":"GDR",
         "Ouro":397,
         "Prata":327,
         "Bronze":281,
         "Total_Medalhas":1005
     },
     {
-        "noc":"GEO",
+        "NOC":"GEO",
         "Ouro":8,
         "Prata":6,
         "Bronze":18,
         "Total_Medalhas":32
     },
     {
-        "noc":"GER",
+        "NOC":"GER",
         "Ouro":744,
         "Prata":674,
         "Bronze":745,
         "Total_Medalhas":2163
     },
     {
-        "noc":"GHA",
+        "NOC":"GHA",
         "Ouro":0,
         "Prata":1,
         "Bronze":22,
         "Total_Medalhas":23
     },
     {
-        "noc":"GRE",
+        "NOC":"GRE",
         "Ouro":62,
         "Prata":108,
         "Bronze":84,
         "Total_Medalhas":254
     },
     {
-        "noc":"GRN",
+        "NOC":"GRN",
         "Ouro":1,
         "Prata":1,
         "Bronze":0,
         "Total_Medalhas":2
     },
     {
-        "noc":"GUA",
+        "NOC":"GUA",
         "Ouro":0,
         "Prata":1,
         "Bronze":0,
         "Total_Medalhas":1
     },
     {
-        "noc":"GUY",
+        "NOC":"GUY",
         "Ouro":0,
         "Prata":0,
         "Bronze":1,
         "Total_Medalhas":1
     },
     {
-        "noc":"HAI",
+        "NOC":"HAI",
         "Ouro":0,
         "Prata":1,
         "Bronze":5,
         "Total_Medalhas":6
     },
     {
-        "noc":"HKG",
+        "NOC":"HKG",
         "Ouro":1,
         "Prata":2,
         "Bronze":1,
         "Total_Medalhas":4
     },
     {
-        "noc":"HUN",
+        "NOC":"HUN",
         "Ouro":432,
         "Prata":332,
         "Bronze":371,
         "Total_Medalhas":1135
     },
     {
-        "noc":"INA",
+        "NOC":"INA",
         "Ouro":11,
         "Prata":17,
         "Bronze":13,
         "Total_Medalhas":41
     },
     {
-        "noc":"IND",
+        "NOC":"IND",
         "Ouro":138,
         "Prata":19,
         "Bronze":40,
         "Total_Medalhas":197
     },
     {
-        "noc":"IOA",
+        "NOC":"IOA",
         "Ouro":1,
         "Prata":1,
         "Bronze":3,
         "Total_Medalhas":5
     },
     {
-        "noc":"IRI",
+        "NOC":"IRI",
         "Ouro":18,
         "Prata":21,
         "Bronze":29,
         "Total_Medalhas":68
     },
     {
-        "noc":"IRL",
+        "NOC":"IRL",
         "Ouro":9,
         "Prata":13,
         "Bronze":13,
         "Total_Medalhas":35
     },
     {
-        "noc":"IRQ",
+        "NOC":"IRQ",
         "Ouro":0,
         "Prata":0,
         "Bronze":1,
         "Total_Medalhas":1
     },
     {
-        "noc":"ISL",
+        "NOC":"ISL",
         "Ouro":0,
         "Prata":15,
         "Bronze":2,
         "Total_Medalhas":17
     },
     {
-        "noc":"ISR",
+        "NOC":"ISR",
         "Ouro":1,
         "Prata":1,
         "Bronze":7,
         "Total_Medalhas":9
     },
     {
-        "noc":"ISV",
+        "NOC":"ISV",
         "Ouro":0,
         "Prata":1,
         "Bronze":0,
         "Total_Medalhas":1
     },
     {
-        "noc":"ITA",
+        "NOC":"ITA",
         "Ouro":573,
         "Prata":531,
         "Bronze":531,
         "Total_Medalhas":1635
     },
     {
-        "noc":"JAM",
+        "NOC":"JAM",
         "Ouro":38,
         "Prata":75,
         "Bronze":44,
         "Total_Medalhas":157
     },
     {
-        "noc":"JOR",
+        "NOC":"JOR",
         "Ouro":1,
         "Prata":0,
         "Bronze":0,
         "Total_Medalhas":1
     },
     {
-        "noc":"JPN",
+        "NOC":"JPN",
         "Ouro":247,
         "Prata":309,
         "Bronze":357,
         "Total_Medalhas":913
     },
     {
-        "noc":"KAZ",
+        "NOC":"KAZ",
         "Ouro":20,
         "Prata":25,
         "Bronze":32,
         "Total_Medalhas":77
     },
     {
-        "noc":"KEN",
+        "NOC":"KEN",
         "Ouro":34,
         "Prata":41,
         "Bronze":31,
         "Total_Medalhas":106
     },
     {
-        "noc":"KGZ",
+        "NOC":"KGZ",
         "Ouro":0,
         "Prata":1,
         "Bronze":2,
         "Total_Medalhas":3
     },
     {
-        "noc":"KOR",
+        "NOC":"KOR",
         "Ouro":221,
         "Prata":232,
         "Bronze":185,
         "Total_Medalhas":638
     },
     {
-        "noc":"KOS",
+        "NOC":"KOS",
         "Ouro":1,
         "Prata":0,
         "Bronze":0,
         "Total_Medalhas":1
     },
     {
-        "noc":"KSA",
+        "NOC":"KSA",
         "Ouro":0,
         "Prata":1,
         "Bronze":5,
         "Total_Medalhas":6
     },
     {
-        "noc":"KUW",
+        "NOC":"KUW",
         "Ouro":0,
         "Prata":0,
         "Bronze":2,
         "Total_Medalhas":2
     },
     {
-        "noc":"LAT",
+        "NOC":"LAT",
         "Ouro":3,
         "Prata":19,
         "Bronze":13,
         "Total_Medalhas":35
     },
     {
-        "noc":"LIB",
+        "NOC":"LIB",
         "Ouro":0,
         "Prata":2,
         "Bronze":2,
         "Total_Medalhas":4
     },
     {
-        "noc":"LIE",
+        "NOC":"LIE",
         "Ouro":2,
         "Prata":2,
         "Bronze":5,
         "Total_Medalhas":9
     },
     {
-        "noc":"LTU",
+        "NOC":"LTU",
         "Ouro":6,
         "Prata":7,
         "Bronze":48,
         "Total_Medalhas":61
     },
     {
-        "noc":"LUX",
+        "NOC":"LUX",
         "Ouro":4,
         "Prata":4,
         "Bronze":0,
         "Total_Medalhas":8
     },
     {
-        "noc":"MAR",
+        "NOC":"MAR",
         "Ouro":6,
         "Prata":5,
         "Bronze":12,
         "Total_Medalhas":23
     },
     {
-        "noc":"MAS",
+        "NOC":"MAS",
         "Ouro":0,
         "Prata":11,
         "Bronze":5,
         "Total_Medalhas":16
     },
     {
-        "noc":"MDA",
+        "NOC":"MDA",
         "Ouro":0,
         "Prata":3,
         "Bronze":5,
         "Total_Medalhas":8
     },
     {
-        "noc":"MEX",
+        "NOC":"MEX",
         "Ouro":30,
         "Prata":26,
         "Bronze":55,
         "Total_Medalhas":111
     },
     {
-        "noc":"MGL",
+        "NOC":"MGL",
         "Ouro":2,
         "Prata":10,
         "Bronze":14,
         "Total_Medalhas":26
     },
     {
-        "noc":"MKD",
+        "NOC":"MKD",
         "Ouro":0,
         "Prata":0,
         "Bronze":1,
         "Total_Medalhas":1
     },
     {
-        "noc":"MLT",
+        "NOC":"MLT",
         "Ouro":2,
         "Prata":0,
         "Bronze":0,
         "Total_Medalhas":2
     },
     {
-        "noc":"MNE",
+        "NOC":"MNE",
         "Ouro":0,
         "Prata":14,
         "Bronze":0,
         "Total_Medalhas":14
     },
     {
-        "noc":"MON",
+        "NOC":"MON",
         "Ouro":0,
         "Prata":0,
         "Bronze":1,
         "Total_Medalhas":1
     },
     {
-        "noc":"MOZ",
+        "NOC":"MOZ",
         "Ouro":1,
         "Prata":0,
         "Bronze":1,
         "Total_Medalhas":2
     },
     {
-        "noc":"MRI",
+        "NOC":"MRI",
         "Ouro":0,
         "Prata":0,
         "Bronze":1,
         "Total_Medalhas":1
     },
     {
-        "noc":"NAM",
+        "NOC":"NAM",
         "Ouro":0,
         "Prata":4,
         "Bronze":0,
         "Total_Medalhas":4
     },
     {
-        "noc":"NED",
+        "NOC":"NED",
         "Ouro":287,
         "Prata":342,
         "Bronze":412,
         "Total_Medalhas":1041
     },
     {
-        "noc":"NEP",
+        "NOC":"NEP",
         "Ouro":1,
         "Prata":0,
         "Bronze":0,
         "Total_Medalhas":1
     },
     {
-        "noc":"NGR",
+        "NOC":"NGR",
         "Ouro":23,
         "Prata":30,
         "Bronze":46,
         "Total_Medalhas":99
     },
     {
-        "noc":"NIG",
+        "NOC":"NIG",
         "Ouro":0,
         "Prata":1,
         "Bronze":1,
         "Total_Medalhas":2
     },
     {
-        "noc":"NOR",
+        "NOC":"NOR",
         "Ouro":378,
         "Prata":361,
         "Bronze":294,
         "Total_Medalhas":1033
     },
     {
-        "noc":"NZL",
+        "NOC":"NZL",
         "Ouro":89,
         "Prata":56,
         "Bronze":82,
         "Total_Medalhas":227
     },
     {
-        "noc":"PAK",
+        "NOC":"PAK",
         "Ouro":42,
         "Prata":45,
         "Bronze":34,
         "Total_Medalhas":121
     },
     {
-        "noc":"PAN",
+        "NOC":"PAN",
         "Ouro":1,
         "Prata":0,
         "Bronze":2,
         "Total_Medalhas":3
     },
     {
-        "noc":"PAR",
+        "NOC":"PAR",
         "Ouro":0,
         "Prata":17,
         "Bronze":0,
         "Total_Medalhas":17
     },
     {
-        "noc":"PER",
+        "NOC":"PER",
         "Ouro":1,
         "Prata":14,
         "Bronze":0,
         "Total_Medalhas":15
     },
     {
-        "noc":"PHI",
+        "NOC":"PHI",
         "Ouro":0,
         "Prata":3,
         "Bronze":7,
         "Total_Medalhas":10
     },
     {
-        "noc":"POL",
+        "NOC":"POL",
         "Ouro":117,
         "Prata":195,
         "Bronze":253,
         "Total_Medalhas":565
     },
     {
-        "noc":"POR",
+        "NOC":"POR",
         "Ouro":4,
         "Prata":11,
         "Bronze":26,
         "Total_Medalhas":41
     },
     {
-        "noc":"PRK",
+        "NOC":"PRK",
         "Ouro":16,
         "Prata":16,
         "Bronze":35,
         "Total_Medalhas":67
     },
     {
-        "noc":"PUR",
+        "NOC":"PUR",
         "Ouro":1,
         "Prata":2,
         "Bronze":6,
         "Total_Medalhas":9
     },
     {
-        "noc":"QAT",
+        "NOC":"QAT",
         "Ouro":0,
         "Prata":1,
         "Bronze":4,
         "Total_Medalhas":5
     },
     {
-        "noc":"ROU",
+        "NOC":"ROU",
         "Ouro":161,
         "Prata":200,
         "Bronze":292,
         "Total_Medalhas":653
     },
     {
-        "noc":"RSA",
+        "NOC":"RSA",
         "Ouro":32,
         "Prata":47,
         "Bronze":52,
         "Total_Medalhas":131
     },
     {
-        "noc":"RUS",
+        "NOC":"RUS",
         "Ouro":390,
         "Prata":367,
         "Bronze":408,
         "Total_Medalhas":1165
     },
     {
-        "noc":"SCG",
+        "NOC":"SCG",
         "Ouro":12,
         "Prata":26,
         "Bronze":26,
         "Total_Medalhas":64
     },
     {
-        "noc":"SEN",
+        "NOC":"SEN",
         "Ouro":0,
         "Prata":1,
         "Bronze":0,
         "Total_Medalhas":1
     },
     {
-        "noc":"SGP",
+        "NOC":"SGP",
         "Ouro":1,
         "Prata":4,
         "Bronze":4,
         "Total_Medalhas":9
     },
     {
-        "noc":"SLO",
+        "NOC":"SLO",
         "Ouro":8,
         "Prata":13,
         "Bronze":27,
         "Total_Medalhas":48
     },
     {
-        "noc":"SRB",
+        "NOC":"SRB",
         "Ouro":15,
         "Prata":29,
         "Bronze":41,
         "Total_Medalhas":85
     },
     {
-        "noc":"SRI",
+        "NOC":"SRI",
         "Ouro":0,
         "Prata":2,
         "Bronze":0,
         "Total_Medalhas":2
     },
     {
-        "noc":"SUD",
+        "NOC":"SUD",
         "Ouro":0,
         "Prata":1,
         "Bronze":0,
         "Total_Medalhas":1
     },
     {
-        "noc":"SUI",
+        "NOC":"SUI",
         "Ouro":175,
         "Prata":248,
         "Bronze":268,
         "Total_Medalhas":691
     },
     {
-        "noc":"SUR",
+        "NOC":"SUR",
         "Ouro":1,
         "Prata":0,
         "Bronze":1,
         "Total_Medalhas":2
     },
     {
-        "noc":"SVK",
+        "NOC":"SVK",
         "Ouro":15,
         "Prata":19,
         "Bronze":13,
         "Total_Medalhas":47
     },
     {
-        "noc":"SWE",
+        "NOC":"SWE",
         "Ouro":478,
         "Prata":522,
         "Bronze":535,
         "Total_Medalhas":1535
     },
     {
-        "noc":"SYR",
+        "NOC":"SYR",
         "Ouro":1,
         "Prata":1,
         "Bronze":1,
         "Total_Medalhas":3
     },
     {
-        "noc":"TAN",
+        "NOC":"TAN",
         "Ouro":0,
         "Prata":2,
         "Bronze":0,
         "Total_Medalhas":2
     },
     {
-        "noc":"TCH",
+        "NOC":"TCH",
         "Ouro":81,
         "Prata":225,
         "Bronze":182,
         "Total_Medalhas":488
     },
     {
-        "noc":"TGA",
+        "NOC":"TGA",
         "Ouro":0,
         "Prata":1,
         "Bronze":0,
         "Total_Medalhas":1
     },
     {
-        "noc":"THA",
+        "NOC":"THA",
         "Ouro":9,
         "Prata":8,
         "Bronze":13,
         "Total_Medalhas":30
     },
     {
-        "noc":"TJK",
+        "NOC":"TJK",
         "Ouro":1,
         "Prata":1,
         "Bronze":2,
         "Total_Medalhas":4
     },
     {
-        "noc":"TOG",
+        "NOC":"TOG",
         "Ouro":0,
         "Prata":0,
         "Bronze":1,
         "Total_Medalhas":1
     },
     {
-        "noc":"TPE",
+        "NOC":"TPE",
         "Ouro":3,
         "Prata":28,
         "Bronze":18,
         "Total_Medalhas":49
     },
     {
-        "noc":"TTO",
+        "NOC":"TTO",
         "Ouro":7,
         "Prata":8,
         "Bronze":17,
         "Total_Medalhas":32
     },
     {
-        "noc":"TUN",
+        "NOC":"TUN",
         "Ouro":3,
         "Prata":3,
         "Bronze":7,
         "Total_Medalhas":13
     },
     {
-        "noc":"TUR",
+        "NOC":"TUR",
         "Ouro":40,
         "Prata":27,
         "Bronze":28,
         "Total_Medalhas":95
     },
     {
-        "noc":"UAE",
+        "NOC":"UAE",
         "Ouro":1,
         "Prata":0,
         "Bronze":1,
         "Total_Medalhas":2
     },
     {
-        "noc":"UAR",
+        "NOC":"UAR",
         "Ouro":0,
         "Prata":1,
         "Bronze":1,
         "Total_Medalhas":2
     },
     {
-        "noc":"UGA",
+        "NOC":"UGA",
         "Ouro":2,
         "Prata":3,
         "Bronze":2,
         "Total_Medalhas":7
     },
     {
-        "noc":"UKR",
+        "NOC":"UKR",
         "Ouro":47,
         "Prata":52,
         "Bronze":100,
         "Total_Medalhas":199
     },
     {
-        "noc":"URS",
+        "NOC":"URS",
         "Ouro":1080,
         "Prata":732,
         "Bronze":689,
         "Total_Medalhas":2501
     },
     {
-        "noc":"URU",
+        "NOC":"URU",
         "Ouro":31,
         "Prata":2,
         "Bronze":30,
         "Total_Medalhas":63
     },
     {
-        "noc":"USA",
+        "NOC":"USA",
         "Ouro":2636,
         "Prata":1637,
         "Bronze":1357,
         "Total_Medalhas":5630
     },
     {
-        "noc":"UZB",
+        "NOC":"UZB",
         "Ouro":10,
         "Prata":7,
         "Bronze":17,
         "Total_Medalhas":34
     },
     {
-        "noc":"VEN",
+        "NOC":"VEN",
         "Ouro":2,
         "Prata":3,
         "Bronze":10,
         "Total_Medalhas":15
     },
     {
-        "noc":"VIE",
+        "NOC":"VIE",
         "Ouro":1,
         "Prata":3,
         "Bronze":0,
         "Total_Medalhas":4
     },
     {
-        "noc":"WIF",
+        "NOC":"WIF",
         "Ouro":0,
         "Prata":0,
         "Bronze":5,
         "Total_Medalhas":5
     },
     {
-        "noc":"YUG",
+        "NOC":"YUG",
         "Ouro":130,
         "Prata":167,
         "Bronze":93,
         "Total_Medalhas":390
     },
     {
-        "noc":"ZAM",
+        "NOC":"ZAM",
         "Ouro":0,
         "Prata":1,
         "Bronze":1,
         "Total_Medalhas":2
     },
     {
-        "noc":"ZIM",
+        "NOC":"ZIM",
         "Ouro":17,
         "Prata":4,
         "Bronze":1,

@@ -8,26 +8,29 @@ CSV_PATH = f'{PATH}{CSV_NAME}'
 DB_NAME = 'olimpiadas'
 DB_PATH = f'{PATH}{DB_NAME}.db'
 
-# Carregar dados do CSV
-df = pd.read_csv(CSV_PATH)
-
-# Substituir os valores 'NA' de Medal para 'No Medal'
-df['Medal'] = df['Medal'].fillna('No Medal')
-
-# Arredondar valores de altura e peso
-df['Height'] = pd.to_numeric(df['Height'], errors='coerce').round(2) / 100  # Transforma em metros
-df['Weight'] = pd.to_numeric(df['Weight'], errors='coerce').round(1)
-
-# Substituir NaN por None na coluna Height e Weight
-df['Height'] = df['Height'].where(pd.notnull(df['Height']), None)
-df['Weight'] = df['Weight'].where(pd.notnull(df['Weight']), None)
-
 # Conexão com banco de dados SQLite
 engine = create_engine(f'sqlite:///{DB_PATH}')
 Base = declarative_base()
-print('Banco criado')
+Session = sessionmaker(bind=engine) # instância para interagir com o banco
 
-# Definição das classes de modelo
+Base.metadata.create_all(engine)
+
+def ler_tratar_dados_csv():
+    df = pd.read_csv(CSV_PATH)
+
+    # Substituir os valores 'NA' de Medal para 'No Medal'
+    df['Medal'] = df['Medal'].fillna('No Medal')
+
+    # Arredondar valores de altura e peso
+    df['Height'] = pd.to_numeric(df['Height'], errors='coerce').round(2) / 100  # Transforma em metros
+    df['Weight'] = pd.to_numeric(df['Weight'], errors='coerce').round(1)
+
+    # Substituir NaN por None na coluna Height e Weight
+    df['Height'] = df['Height'].where(pd.notnull(df['Height']), None)
+    df['Weight'] = df['Weight'].where(pd.notnull(df['Weight']), None)
+
+    return df
+
 class Atleta(Base):
     __tablename__ = 'Atleta'
     ID_Atleta = Column(Integer, primary_key=True)
@@ -77,92 +80,81 @@ class Participacao(Base):
     evento = relationship('Evento', back_populates='participacoes')
     pais = relationship('Pais')
 
-# Criar todas as tabelas no banco de dados
-Base.metadata.create_all(engine)
-print("Tabelas criadas")
+def inserir_dados(df):
+    """Insere os dados do DataFrame nas tabelas do banco de dados."""
+    session = Session()
+    for index, row in df.iterrows():
+        # Inserir atleta se não existir
+        atleta_existente = session.query(Atleta).filter_by(ID_Atleta=row['ID']).first()
+        if not atleta_existente:
+            atleta = Atleta(
+                ID_Atleta=row['ID'],
+                Name=row['Name'],
+                Sex=row['Sex'],
+                Age=row['Age'],
+                Height=row['Height'],
+                Weight=row['Weight']
+            )
+            session.add(atleta)
 
-# Criar uma sessão para interagir com o banco de dados
-Session = sessionmaker(bind=engine)
-session = Session()
-print("Sessão iniciada")
-
-# Inserir dados nas tabelas
-for index, row in df.iterrows():
-    print(f"{row['ID']}")
-    # Inserir atleta se não existir
-    atleta_existente = session.query(Atleta).filter_by(ID_Atleta=row['ID']).first()
-    if not atleta_existente:
-        atleta = Atleta(
-            ID_Atleta=row['ID'],
-            Name=row['Name'],
-            Sex=row['Sex'],
-            Age=row['Age'],
-            Height=row['Height'],
-            Weight=row['Weight']
-        )
-        session.add(atleta)
-
-    # Inserir país se não existir
-    pais_existente = session.query(Pais).filter_by(Team=row['Team']).first()
-    if pais_existente==None:
-        pais = Pais(
-            NOC=row['NOC'],
-            Team=row['Team']
-        )
-        session.add(pais)
-        session.flush()  # Para obter o ID_Pais gerado automaticamente
-        session.commit()
-
-        # print(f"{_id_pais} - {pais_existente} - {row['Team']}")
+        # Inserir país se não existir
+        pais_existente = session.query(Pais).filter_by(Team=row['Team']).first()
+        if not pais_existente:
+            pais = Pais(
+                NOC=row['NOC'],
+                Team=row['Team']
+            )
+            session.add(pais)
+            session.flush()  # Para obter o ID_Pais gerado automaticamente
         
-    _id_pais = session.query(Pais).filter_by(Team=row['Team']).first().ID_Pais
-    
+        _id_pais = session.query(Pais).filter_by(Team=row['Team']).first().ID_Pais
 
-    # Inserir jogo se não existir
-    jogo_existente = session.query(Jogo).filter_by(Games=row['Games'], Year=row['Year'], Season=row['Season']).first()
-    if not jogo_existente:
-        jogo = Jogo(
-            Games=row['Games'],
-            Year=row['Year'],
-            Season=row['Season']
+        # Inserir jogo se não existir
+        jogo_existente = session.query(Jogo).filter_by(Games=row['Games'], Year=row['Year'], Season=row['Season']).first()
+        if not jogo_existente:
+            jogo = Jogo(
+                Games=row['Games'],
+                Year=row['Year'],
+                Season=row['Season']
+            )
+            session.add(jogo)
+            session.flush()  # Para obter o ID_Jogo gerado automaticamente
+        
+        _id_jogo = session.query(Jogo).filter_by(Games=row['Games'], Year=row['Year'], Season=row['Season']).first().ID_Jogo
+
+        # Inserir evento se não existir
+        evento_existente = session.query(Evento).filter_by(Event=row['Event'], Sport=row['Sport'], City=row['City'], ID_Jogo=_id_jogo).first()
+        if not evento_existente:
+            evento = Evento(
+                Event=row['Event'],
+                Sport=row['Sport'],
+                City=row['City'],
+                ID_Jogo=_id_jogo
+            )
+            session.add(evento)
+            session.flush()  # Para obter o ID_Evento gerado automaticamente
+        
+        _id_evento = session.query(Evento).filter_by(Event=row['Event'], Sport=row['Sport'], City=row['City'], ID_Jogo=_id_jogo).first().ID_Evento
+
+        # Inserir participação
+        participacao = Participacao(
+            ID_Atleta=row['ID'],
+            ID_Team=_id_pais,
+            ID_Evento=_id_evento,
+            Medal=row['Medal']
         )
-        session.add(jogo)
-        session.flush()  # Para obter o ID_Jogo gerado automaticamente
+        session.add(participacao)
     
-    _id_jogo = session.query(Jogo).filter_by(Games=row['Games'], Year=row['Year'], Season=row['Season']).first().ID_Jogo
+    # Commitar todas as mudanças no final
+    session.commit()
+    session.close()
+    print("Commit realizado")
 
-    # Inserir evento se não existir
-    evento_existente = session.query(Evento).filter_by(Event=row['Event'], Sport=row['Sport'], City=row['City'], ID_Jogo=_id_jogo).first()
-    if not evento_existente:
-        evento = Evento(
-            Event=row['Event'],
-            Sport=row['Sport'],
-            City=row['City'],
-            ID_Jogo=_id_jogo
-        )
-        session.add(evento)
-        session.flush()  # Para obter o ID_Evento gerado automaticamente
-    
-    _id_evento = session.query(Evento).filter_by(Event=row['Event'], Sport=row['Sport'], City=row['City'], ID_Jogo=_id_jogo).first().ID_Evento
-
-    # Inserir participação
-    participacao = Participacao(
-        ID_Atleta=row['ID'],
-        ID_Team=_id_pais,
-        ID_Evento=_id_evento,
-        Medal=row['Medal']
-    )
-    session.add(participacao)
-    
-
-# Commitar todas as mudanças no final
-session.commit()
-print("Commit realizado")
-
-def medalhas_por_pais():
+def consulta_medalhas_por_pais():
+    """Consulta SQL para calcular medalhas por país."""
     query = text("""
     SELECT
-        P.NOC AS noc,
+        P.NOC AS NOC,
         SUM(CASE WHEN M.Medal = 'Gold' THEN 1 ELSE 0 END) AS Ouro,
         SUM(CASE WHEN M.Medal = 'Silver' THEN 1 ELSE 0 END) AS Prata,
         SUM(CASE WHEN M.Medal = 'Bronze' THEN 1 ELSE 0 END) AS Bronze,
@@ -176,22 +168,32 @@ def medalhas_por_pais():
     df_medalhas_paises = pd.read_sql(query, engine)
     return df_medalhas_paises
 
-def participacoes_por_atleta():
+def consulta_medalhas_participacoes_por_atleta(): # Consulta SQL para calcular participações, medalhas de ouro, prata e bronze por atleta
     query = text("""
-    SELECT A.Name, COUNT(P.ID_Participacao) AS Total_Participacoes
+    SELECT
+        A.Name as Nome,
+        COUNT(P.ID_Participacao) AS Total_Participacoes,
+        SUM(CASE WHEN P.Medal = 'Gold' THEN 1 ELSE 0 END) AS Ouro,
+        SUM(CASE WHEN P.Medal = 'Silver' THEN 1 ELSE 0 END) AS Prata,
+        SUM(CASE WHEN P.Medal = 'Bronze' THEN 1 ELSE 0 END) AS Bronze
     FROM Atleta A
-    JOIN Participacao P ON A.ID_Atleta = P.ID_Atleta
-    GROUP BY A.Name
+    LEFT JOIN Participacao P ON A.ID_Atleta = P.ID_Atleta
+    GROUP BY Nome
     ORDER BY Total_Participacoes DESC;
     """)
-    df_participacoes_atletas = pd.read_sql(query, engine)
-    return df_participacoes_atletas
+    df_medalhas_participacoes_atletas = pd.read_sql(query, engine)
+    return df_medalhas_participacoes_atletas
 
-df_medalhas_paises = medalhas_por_pais()
-df_participacoes_atletas = participacoes_por_atleta()
+def salvar_resultados_json(df_medalhas_paises, df_participacoes_atletas):
+    df_medalhas_paises.to_json(f'{PATH}Arquivos_json\\medalhas_paises.json', orient='records', indent=4)
+    df_participacoes_atletas.to_json(f'{PATH}Arquivos_json\\medalhas_participacoes_por_atleta.json', orient='records', indent=4)
 
-# Salvar resultados como JSON
-df_medalhas_paises.to_json(f'{PATH}Arquivos_json\\medalhas_paises.json', orient='records', indent=4)
-df_participacoes_atletas.to_json(f'{PATH}Arquivos_json\\participacoes_atletas.json', orient='records', indent=4)
+# Execução das funções
+df = ler_tratar_dados_csv()
+# insere_dados(df)
+df_medalhas_paises = consulta_medalhas_por_pais()
+df_medalhas_participacoes_por_atleta = consulta_medalhas_participacoes_por_atleta()
+salvar_resultados_json(df_medalhas_paises, df_medalhas_participacoes_por_atleta)
 
-session.close()
+print(df_medalhas_paises.head(5))
+print(df_medalhas_participacoes_por_atleta.head(5))
