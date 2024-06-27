@@ -1,5 +1,6 @@
 from sqlalchemy import MetaData, create_engine, Table, Column, Integer, String, Float, ForeignKey, text
 import pandas as pd
+from sqlalchemy.pool import QueuePool
 
 PATH = 'AT\\'
 CSV_NAME = 'olimpiadas.csv'
@@ -10,18 +11,8 @@ DB_PATH = f'{PATH}{DB_NAME}.db'
 # Carregar dados do CSV
 df = pd.read_csv(CSV_PATH)
 
-# Substituir os valores 'NA' de Medal para 'No Medal'
-df['Medal'] = df['Medal'].fillna('No Medal')
-
-# Substituir os valores 'NA' de Age para '-'
-df['Age'] = df['Age'].fillna('-')
-
-# Substituir os valores 'NA' de Height e Weight por "Não definido"
-df['Height'] = df['Height'].fillna('Não definido')
-df['Weight'] = df['Weight'].fillna('Não definido')
-
-# Conexão com banco de dados SQLite
-engine = create_engine(f'sqlite:///{DB_PATH}')
+# Conexão com banco de dados SQLite usando QueuePool
+engine = create_engine(f'sqlite:///{DB_PATH}', pool_size=50, max_overflow=100, poolclass=QueuePool)
 metadata = MetaData()
 
 # Definindo as tabelas
@@ -71,31 +62,47 @@ participacoes = Table(
 # Criar todas as tabelas no banco de dados
 metadata.create_all(engine)
 
-# Preparando os DataFrames
-atletas_df = df[['Name', 'Sex', 'Age', 'Height', 'Weight']].drop_duplicates().reset_index(drop=True)
-paises_df = df[['NOC', 'Team']].drop_duplicates().reset_index(drop=True)
-jogos_df = df[['Games', 'Year', 'Season']].drop_duplicates().reset_index(drop=True)
+# Leitura do CSV em chunks
+chunksize = 10000  # Tamanho do chunk
+df_chunks = pd.read_csv(CSV_PATH, chunksize=chunksize)
 
-eventos_df = df[['Event', 'Sport', 'City', 'Games']].drop_duplicates().reset_index(drop=True)
-eventos_df = eventos_df.merge(jogos_df.reset_index(), left_on='Games', right_on='Games')
-eventos_df = eventos_df.rename(columns={'index': 'ID_Game'})[['Event', 'ID_Game']]
+# Processamento de cada chunk
+for chunk in df_chunks:
+    # Substituir os valores 'NA' de Medal para 'No Medal'
+    chunk['Medal'] = chunk['Medal'].fillna('No Medal')
 
-participacoes_df = df[['Name', 'NOC', 'Event', 'Medal']]
-participacoes_df = participacoes_df.merge(atletas_df.reset_index(), left_on='Name', right_on='Name')
-participacoes_df = participacoes_df.merge(paises_df.reset_index(), left_on='NOC', right_on='NOC')
-participacoes_df = participacoes_df.merge(eventos_df.reset_index(), left_on='Event', right_on='Event')
-participacoes_df = participacoes_df.rename(columns={'index': 'ID_Atleta', 'index_x': 'ID_Team', 'index_y': 'ID_Evento'})[['ID_Atleta', 'ID_Team', 'ID_Evento', 'Medal']]
+    # Substituir os valores 'NA' de Age para '-'
+    chunk['Age'] = chunk['Age'].fillna('-')
 
-conn = engine.connect()
+    # Substituir os valores 'NA' de Height e Weight por "Não definido"
+    chunk['Height'] = chunk['Height'].fillna('Não definido')
+    chunk['Weight'] = chunk['Weight'].fillna('Não definido')
 
-# Inserindo DataFrames no Banco
-atletas_df.to_sql('Atletas', conn, if_exists='replace', index=False)
-paises_df.to_sql('Paises', conn, if_exists='replace', index=False)
-jogos_df.to_sql('Jogos', conn, if_exists='replace', index=False)
-eventos_df.to_sql('Eventos', conn, if_exists='replace', index=False)
-participacoes_df.to_sql('Participacoes', conn, if_exists='replace', index=False)
+    # Preparando os DataFrames específicos para cada chunk
+    atletas_df = chunk[['Name', 'Sex', 'Age', 'Height', 'Weight']].drop_duplicates().reset_index(drop=True)
+    paises_df = chunk[['NOC', 'Team']].drop_duplicates().reset_index(drop=True)
+    jogos_df = chunk[['Games', 'Year', 'Season']].drop_duplicates().reset_index(drop=True)
 
-conn.close()
+    eventos_df = chunk[['Event', 'Sport', 'City', 'Games']].drop_duplicates().reset_index(drop=True)
+    eventos_df = eventos_df.merge(jogos_df.reset_index(), on='Games')
+    eventos_df = eventos_df.rename(columns={'index': 'ID_Game'})[['Event', 'ID_Game']]
+
+    participacoes_df = chunk[['Name', 'NOC', 'Event', 'Medal']]
+    participacoes_df = participacoes_df.merge(atletas_df.reset_index(), on='Name')
+    participacoes_df = participacoes_df.merge(paises_df.reset_index(), on='NOC')
+    participacoes_df = participacoes_df.merge(eventos_df.reset_index(), on='Event')
+    participacoes_df = participacoes_df.rename(columns={'index': 'ID_Atleta', 'index_x': 'ID_Team', 'index_y': 'ID_Evento'})[['ID_Atleta', 'ID_Team', 'ID_Evento', 'Medal']]
+
+    conn = engine.connect()
+
+    # Inserindo DataFrames no Banco
+    atletas_df.to_sql('Atletas', conn, if_exists='append', index=False)
+    paises_df.to_sql('Paises', conn, if_exists='append', index=False)
+    jogos_df.to_sql('Jogos', conn, if_exists='append', index=False)
+    eventos_df.to_sql('Eventos', conn, if_exists='append', index=False)
+    participacoes_df.to_sql('Participacoes', conn, if_exists='append', index=False)
+
+    conn.close()
 
 def medalhas_por_pais():
     query = text("""
@@ -129,8 +136,9 @@ def participacoes_medalhas_por_atleta():
     ORDER BY Total_Participacoes DESC;
     """)
     df_participacoes_medalhas_por_atleta = pd.read_sql(query, engine)
-    return df_participacoes_medalhas_por_atleta
+    return df_participacoes_medalhas_por_atleta()
 
+# Obter resultados
 df_medalhas_paises = medalhas_por_pais()
 df_participacoes_medalhas_por_atleta = participacoes_medalhas_por_atleta()
 
