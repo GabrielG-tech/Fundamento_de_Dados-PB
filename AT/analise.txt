@@ -1,0 +1,8 @@
+Considerações iniciais:
+1. Notei que os jogos Olímpicos de um mesmo ano podem ocorrer em mais de uma cidade (Ex: Summer 1956 em Melbourne e Stockholm), considerando que cada evento ocorre em apenas uma cidade, sendo assim mudei o atributo “City” de “Game” para “Event”. ao visualizar no g. excel
+
+2. A idade do atleta varia de temporada para temporada (sendo assim mudei o atributo “Age” de Atleta para Participação) 
+
+3. Considerei que um mesmo Atleta pode ter representado um time diferente em cada Olimpíada  “Games”, mudei o atributo “Team” de Atleta para Participação
+
+4. Identifiquei que o campo peso e altura não variam de acordo com os “Games” segue um exemplo, no caso abaixo o Atleta manteve o mesmo peso e altura em um espaço de tempo de  14 anos, sendo assim mantive o campo peso e altura no atleta, porém se os dados retratassem a realidade no momento da competição esses 2 campos deveriam estar na tabela de participação:
